@@ -9,6 +9,9 @@ import Coupon from '../components/Coupon.vue'
 import User from '../components/User.vue'
 import Token from '../components/Token.vue'
 import Echarts from '../components/Echarts.vue'
+import shopIndex from '../components/Shop/shopIndex.vue'
+import shopList from '../components/Shop/shopList.vue'
+import shopAduitList from '../components/Shop/shopAduitList.vue'
 
 let routes = [
   {
@@ -18,18 +21,21 @@ let routes = [
     hidden: true
   },
   {
-    path: '/pending',
+    path: '/shopIndex',
     component: Home,
     name: '店铺管理',
     iconCls: 'fa fa-shopping-bag',//图标样式class
     children: [
-      { path:'/pending',component:Shop,name:'待审核店铺',meta:{radio:0} },
-      { path:'/notpass',component:Shop,name:'审核未通过店铺',meta:{radio:1} },
-      { path:'/tobeopened',component:Shop,name:'待开通店铺',meta:{radio:2} },
-      { path:'/opening',component:Shop,name:'营业中店铺',meta:{radio:3} },
-      { path:'/pause',component:Shop,name:'暂停营业',meta:{radio:4} },
-      { path:'/cancelled',component:Shop,name:'已注销',meta:{radio:5} },
-      { path:'/frozen',component:Shop,name:'被冻结',meta:{radio:6} },
+      { path:'/shopIndex',component:shopIndex,name:'店铺首页' },
+      { path:'/shopList',component:shopList,name:'店铺列表',meta:{radio:0} },
+      { path:'/shopAduitList',component:shopAduitList,name:'审核列表',meta:{radio:0} }
+      // { path:'/pending',component:Shop,name:'待审核店铺',meta:{radio:0} },
+      // { path:'/notpass',component:Shop,name:'审核未通过店铺',meta:{radio:1} },
+      // { path:'/tobeopened',component:Shop,name:'待开通店铺',meta:{radio:2} },
+      // { path:'/opening',component:Shop,name:'营业中店铺',meta:{radio:3} },
+      // { path:'/pause',component:Shop,name:'暂停营业',meta:{radio:4} },
+      // { path:'/cancelled',component:Shop,name:'已注销',meta:{radio:5} },
+      // { path:'/frozen',component:Shop,name:'被冻结',meta:{radio:6} },
       // { path:'/searchstore',component:Shop,name:'查询店铺',meta:{radio:10} }
     ]
   },

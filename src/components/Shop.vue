@@ -1,31 +1,8 @@
 <template>
   <section>
-    <!-- 顶部表格 -->
-    <table class="topTable" v-if="!searchPage">
-      <tr>
-        <td class="t-tit">深圳市店铺数：</td>
-        <td>{{topTable.total_shp_SZ}}</td>
-        <td class="t-tit">营业收入总额：</td>
-        <td>{{topTable.total_amount_income}}</td>
-        <td class="t-tit">待购买优惠券总量：</td>
-        <td>{{topTable.total_coupon_to_buy}}</td>
-        <td class="t-tit">邀请好友总数：</td>
-        <td>{{topTable.total_ivt_vdr}}</td>
-      </tr>
-      <tr>
-        <td class="t-tit">非深圳市店铺数：</td>
-        <td>{{topTable.total_shp_FSZ}}</td>
-        <td class="t-tit">可提现总余额：</td>
-        <td>{{topTable.total_can_withdraw}}</td>
-        <td class="t-tit">待消费优惠券总量：</td>
-        <td>{{topTable.total_coupon_to_consume}}</td>
-        <td class="t-tit">邀请店铺总数：</td>
-        <td>{{topTable.total_ivt_shp}}</td>
-      </tr>
-    </table>
 
     <!-- 搜索框 -->
-		<el-form :inline="true" class="searchForm" v-else>
+		<el-form :inline="true" class="searchForm">
 			<el-form-item>
 				<el-input v-model="keyword" class="searchInput">
 					<el-select v-model="value" slot="prepend" @change="changeValue(value)">

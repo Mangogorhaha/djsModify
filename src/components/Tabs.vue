@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { Shop, Comment, Drawout, Recharge, Order, Coupon, User, Token } from './Search.js'
+import { Shop, Comment, Drawout, Recharge, Order, Coupon, User, Token } from './Tabs.js'
 // import { Search } from '../api/api'
 
 	export default {

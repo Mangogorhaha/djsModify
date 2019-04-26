@@ -88,9 +88,6 @@ body {
 .searchForm .el-select {
   width: 130px;
 }
-.searchForm .el-input__inner:last-child {
-  width: 450px;
-}
 
 .FF6600 {
 	color: #FF6600;

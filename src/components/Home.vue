@@ -22,9 +22,16 @@
 				<!--导航菜单-->
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
 					 unique-opened router v-show="!collapsed">
-					<el-menu-item :index="item.path+'?index='+(index-1)" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
+					<!-- <el-menu-item :index="item.path+'?index='+(index-1)" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
 						<i :class="item.iconCls" ></i>{{item.name}}
-					</el-menu-item>
+					</el-menu-item> -->
+					<el-submenu :index="item.path+'?index='+(index-1)" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
+						<template slot="title"><i :class="item.iconCls" ></i>{{item.name}}</template>
+						<el-menu-item v-for="(child, subIndex) in item" :index="child.path+'?index='+(index-1)" :key="subIndex">
+							{{child.name}}
+						</el-menu-item>
+					</el-submenu>
+					
 				</el-menu>
 			</aside>
 			<!-- 标签页 -->
@@ -38,7 +45,7 @@
 								</transition>
       				</el-tab-pane>
 							<el-tab-pane :label="item.title" :name="item.name" v-for="item in searchTabs" :key="item.name" closable lazy>
-								<Search></Search>
+								<Tabs></Tabs>
 							</el-tab-pane>
 						</el-tabs>
 					</el-col>
@@ -51,7 +58,7 @@
 
 <script>
 import { Logout } from '../api/api';
-import Search from './Search.vue'
+import Tabs from './Tabs.vue'
 
 	export default {
 		data() {
@@ -74,7 +81,7 @@ import Search from './Search.vue'
 			}
 		},
 		components: {
-			Search
+			Tabs
 		},
 		methods: {
 			onSubmit() {
