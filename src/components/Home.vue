@@ -1,9 +1,7 @@
 <template>
 	<el-row class="container">
 		<el-col :span="24" class="header">
-			<el-col :span="18" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-				{{collapsed?'':sysName}}
-			</el-col>
+			<el-col :span="18" class="logo logo-width">{{sysName}}</el-col>
 			<el-col :span="2">{{nowTime}}</el-col>
 			<el-col :span="2">{{week}}</el-col>
 			<el-col :span="2" class="userinfo">
@@ -18,34 +16,27 @@
 			</el-col>
 		</el-col>
 		<el-col :span="24" class="main">
-			<aside :class="collapsed?'menu-collapsed':'menu-expanded'">
+			<aside class="menu-expanded">
 				<!--导航菜单-->
-				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
-					 unique-opened router v-show="!collapsed">
-					<!-- <el-menu-item :index="item.path+'?index='+(index-1)" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
-						<i :class="item.iconCls" ></i>{{item.name}}
-					</el-menu-item> -->
-					<el-submenu :index="item.path+'?index='+(index-1)" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
+				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect" unique-opened router>
+					<el-submenu :index="item.path" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
 						<template slot="title"><i :class="item.iconCls" ></i>{{item.name}}</template>
-						<el-menu-item v-for="(child, subIndex) in item" :index="child.path+'?index='+(index-1)" :key="subIndex">
+						<!-- <el-menu-item v-for="(child, subIndex) in item.children" :index="child.path+'?index='+(index-1)" :key="subIndex" v-if="!child.hidden"> -->
+						<el-menu-item v-for="(child, subIndex) in item.children" :index="child.path" :key="subIndex" v-if="!child.hidden">
 							{{child.name}}
 						</el-menu-item>
 					</el-submenu>
-					
 				</el-menu>
 			</aside>
 			<!-- 标签页 -->
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" class="content-wrapper">
-						<el-tabs v-model="tabBarsValue" type="card" @tab-remove="handleTabsRemove">
-      				<el-tab-pane name="0" :label="this.$route.name">
+						<el-tabs v-model="activeIndex" type="card" @tab-remove="tabRemove" @tab-click='tabClick'>
+							<el-tab-pane :label="item.name" :name="item.route" v-for="(item, index) in tabs" :key="item.route+index" closable>
 								<transition name="fade" mode="out-in">
-									<router-view></router-view>
+									<router-view :item="item"></router-view>
 								</transition>
-      				</el-tab-pane>
-							<el-tab-pane :label="item.title" :name="item.name" v-for="item in searchTabs" :key="item.name" closable lazy>
-								<Tabs></Tabs>
 							</el-tab-pane>
 						</el-tabs>
 					</el-col>
@@ -58,35 +49,20 @@
 
 <script>
 import { Logout } from '../api/api';
-import Tabs from './Tabs.vue'
 
 	export default {
 		data() {
 			return {
-				count: 0,
+				count: 1,
 				sysName:'大家省后台管理系统',
 				nowTime: '',
 				week: '',
-				collapsed:false,
 				sysUserName: '',
 				sysUserAvatar: '',
 
-				// 标签页
-				tabBarsValue: '0',
-				searchTabsValue: 0,
-				// searchTabs: [],  //computed
-				searchTabsBar: [],
-				isSearch: 0, 
-				index: 0
 			}
 		},
-		components: {
-			Tabs
-		},
 		methods: {
-			onSubmit() {
-				console.log('submit!');
-			},
 			handleselect: function (a, b) {
 			},
 			//退出登录
@@ -97,67 +73,51 @@ import Tabs from './Tabs.vue'
 				}).then(() => {
 					let cnckey = this.$store.state.user.userInfo.cnckey;
 					Logout({"cnckey": cnckey}).then(res => {
-						if(res.data.result == 0){
-							localStorage.removeItem('userInfo'); //清除本地保存cnckey
-							_this.$router.push('/login');
-						}else{
-							_this.$alert('登出失败，请重试');
-						}
+						console.log(res.data.message)
+						localStorage.removeItem('userInfo'); //清除本地保存cnckey
+						_this.$router.push('/login');
 					})
 				}).catch(() => {
 
 				});
 			},
-			//折叠导航栏
-			collapse:function(){
-				this.collapsed=!this.collapsed;
-			},
-			showMenu(i,status){
-				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
-			},
 			// 获取当前时间函数
-			timeFormate(timeStamp) {
+			nowTimes(timeStamp) {
 				let year = new Date(timeStamp).getFullYear();
 				let month =new Date(timeStamp).getMonth() + 1 < 10? "0" + (new Date(timeStamp).getMonth() + 1): new Date(timeStamp).getMonth() + 1;
 				let date =new Date(timeStamp).getDate() < 10? "0" + new Date(timeStamp).getDate(): new Date(timeStamp).getDate();
 				let hh =new Date(timeStamp).getHours() < 10? "0" + new Date(timeStamp).getHours(): new Date(timeStamp).getHours();
 				let mm =new Date(timeStamp).getMinutes() < 10? "0" + new Date(timeStamp).getMinutes(): new Date(timeStamp).getMinutes();
 				// let ss =new Date(timeStamp).getSeconds() < 10? "0" + new Date(timeStamp).getSeconds(): new Date(timeStamp).getSeconds();
-				// return year + "年" + month + "月" + date +"日"+" "+hh+":"+mm ;
-				this.nowTime = year + "年" + month + "月" + date +"日";
-				// console.log(this.nowTime);
+				this.nowTime = year + " 年 " + month + " 月 " + date +" 日";
+				this.week = "星期" + "日一二三四五六".charAt(timeStamp.getDay());
 			},
-			// 定时器函数
-			nowTimes(){
-				this.timeFormate(new Date());
-				// setInterval(this.nowTimes,30*1000);
+
+			//tab标签点击时，切换相应的路由
+			tabClick(tab){
+				this.$router.push(this.activeIndex);
 			},
-			getweek(){
-				this.week = "星期" + "日一二三四五六".charAt(new Date().getDay());
-			},
-			// 删除标签页
-			handleTabsRemove(targetName){
-				let tabs = this.searchTabs;
-        let activeName = this.tabBarsValue;
-        if (activeName === targetName) {
-          tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-							//让当前项变为后一项，若无，则变为前一项
-              let nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeName = nextTab.name;
-              }else activeName = '0'
-            }
-          });
-        }
-        this.tabBarsValue = activeName;
-				this.searchTabsBar = tabs.filter(tab => tab.name !== targetName);
-				// console.log(this.searchTabsBar);
-			},
+			//移除tab标签
+			tabRemove(targetName){
+				let tabs = this.tabs;
+				if (tabs && tabs.length > 1) {
+					if (this.activeIndex === targetName) { //删除页为当前页
+						tabs.forEach((tab, index) => {
+							if (tab.route === targetName) {
+								let activeTab = tabs[index + 1] || tabs[index - 1];
+								if (activeTab) {
+									this.$store.dispatch('tabs/setActive', activeTab.route);
+									this.$router.push({path: activeTab.route});
+								}
+							}
+						});
+					}
+					this.$store.dispatch('tabs/deleteTabs', targetName);
+				}
+			}
 		},
 		created() {
-			this.nowTimes();
-			this.getweek();
+			this.nowTimes(new Date());
 			// 查找缓存，将userInfo存入全局变量
 			let user = localStorage.getItem('userInfo')
 			if(user){
@@ -168,28 +128,50 @@ import Tabs from './Tabs.vue'
 		mounted() {
 			this.sysUserName = this.$store.state.user.userInfo.userName
 			this.sysUserAvatar = {imgUrl:require('../assets/avatar.jpg')};
+			// 刷新时以当前路由做为tab加入tabs
+			if(this.tabs.length > 0) {
+				for(let item of this.$store.state.tabs.tabs){
+					if(item.title === to.name){
+						this.$store.dispatch('tabs/setActive',to.path)
+						break;
+					}
+				}
+			}else {
+				this.$store.dispatch('tabs/addTabs', {route: this.$route.path, name: this.$route.name });
+				this.$store.dispatch('tabs/setActive', this.$route.path);
+			}
 		},
 		watch: {
 			$route (to, from){
-				if(this.index != this.$route.query.index){
-					this.tabBarsValue = '0';
-					this.index == this.$route.query.index
-				}
+				let flag = false;
+				
+				// 判断是否已打开标签页
+        for(let item of this.tabs){
+          if(item.name === to.name){
+						if (to.path.indexOf('?') == -1){
+							this.$store.dispatch('tabs/setActive',to.path)
+							flag = true;
+							break;
+						}
+          }
+        }
+        if(!flag){
+          this.$store.dispatch('tabs/addTabs', {route: to.path, name: to.name});
+          this.$store.dispatch('tabs/setActive', to.path);
+        }
 			}
 		},
 		computed: {
-			searchTabs() {
-				// let searchTabs = [];
-				if(this.isSearch != this.$store.state.search.searchInfo.isSearch){
-					let newTabName = ++this.searchTabsValue + '';
-					this.searchTabsBar.push({
-						title: this.$store.state.search.searchInfo.searchTabName,
-						name: newTabName,
-					});
-					this.tabBarsValue = newTabName;
-					this.isSearch = this.$store.state.search.searchInfo.isSearch;
+			tabs () {
+				return this.$store.state.tabs.tabs;
+			},
+			activeIndex: {
+				get () {
+					return this.$store.state.tabs.activeIndex;
+				},
+				set (val) {
+					this.$store.dispatch('tabs/setActive', val);
 				}
-				return this.searchTabsBar;
 			}
 		}
 	}

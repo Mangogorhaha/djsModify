@@ -70,7 +70,7 @@ export default {
               // 存储全局变量的userInfo
               this.$store.dispatch('user/setUserInfo', userInfo)
               // console.log(this.$store.state.user);
-              that.$router.push('/pending');
+              that.$router.push('/shopIndex');
             } else {
               that.$alert('登录失败，错误原因：'+ res.data.message);
             }
@@ -86,7 +86,7 @@ export default {
     let userInfo = localStorage.getItem("userInfo");
     // console.log(userInfo);
     if (userInfo && userInfo.length > 0){
-      this.$router.push({ path: "/pending" });
+      this.$router.push({ path: "/shopIndex" });
     }
   }
 }

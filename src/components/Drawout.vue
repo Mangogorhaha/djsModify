@@ -38,14 +38,6 @@
 			</el-form-item>
 		</el-form>
 
-    <!-- 路由选项 -->
-    <el-radio-group v-model="radio" @change="changeLabel(radio)">
-      <el-radio label="0">银行卡提现</el-radio>
-      <el-radio label="1">微信提现</el-radio>
-      <el-radio label="2">支付宝提现</el-radio>
-    </el-radio-group>
-    <el-button type="primary" @click.native='search' v-if="!searchPage">查询提现</el-button>
-
     <!-- 提现记录数据 -->
     <el-table :data="drawoutList.slice((page-1)*20,page*20)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
       <el-table-column prop="odr_internal" key="1" label="提现单号" min-width="130">
@@ -181,41 +173,6 @@ export default {
           });
         }
 			})
-    },
-    // 查询提现记录
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询提现'
-      }
-      this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
-    // 修改查询条件
-    changeValue: function(e) {
-      this.value = e;
-    },
-    //TODO: 调用接口，传keyword后台返回数据
-    searchByKeyword: function() {
-      // let param = {
-      //   "cnckey": this.$store.state.user.userInfo.cnckey,
-      //   "shp_status": this.radio.toString(),
-      //   "condition_status": this.value.toString(),
-      //   "condition": this.keyword,
-      //   "page": this.page.toString(),
-      //   "item": this.item.toString(),
-      // }
-      // Search(param).then(res => {
-      //   console.log(res);
-      //   this.listData = res.data;
-      // })
-    },
-
-    // 切换路由
-    changeLabel: function(e) {
-      if (!this.searchPage){
-        let routers = ['/card','/wechat','/alipay'];
-        this.$router.push(routers[e]+'?index='+1);
-      }else this.getList();
     },
 
     handleCurrentChange(val) {

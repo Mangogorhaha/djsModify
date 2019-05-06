@@ -15,7 +15,8 @@ export const Logout = params => { return axios.post('/Adm_Acc_Quit', params); }
 export const ShopListSearch = params => { return axios.post('test_Adm_Shp_Search', params); }
 // 获取店铺列表
 // export const ShopList = params => { return axios.post('/Adm_Shp_List', params); };
-export const ShopList = params => { return axios.post('/test_Adm_Shp_List', params); };
+// export const ShopList = params => { return axios.post('/test_Adm_Shp_List', params); };
+export const ShopList = params => { return axios.post('/Adm_Shp_List', params); };
 // 审核界面数据
 // export const ShopDetail = params => { return axios.post('/Adm_Shp_Detail', params)}
 export const ShopDetail = params => { return axios.post('/test_Adm_Shp_Detail', params); }

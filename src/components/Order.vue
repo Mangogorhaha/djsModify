@@ -19,16 +19,7 @@
         <td>6</td>
       </tr>
     </table>
-
-    <!-- 路由选项 -->
-    <el-radio-group v-model="radio" @change="changeLabel(radio)">
-      <el-radio label="2">待消费订单</el-radio>
-      <el-radio label="1">已消费订单</el-radio>
-      <el-radio label="0">待商户确认订单</el-radio>
-      <el-radio label="3">退款订单</el-radio>
-    </el-radio-group>
-    <el-button type="primary" @click.native='search' v-if="!searchPage">查询订单</el-button>
-
+    
     <!-- 充值记录数据 -->
     <el-table :data="orderList.slice((page-1)*20,page*20)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
       <el-table-column prop="odr_internal" key="1" label="购买时间" min-width="130">
@@ -103,20 +94,6 @@ export default {
           this.listLoading = false;
         }
 			})
-    },
-    // 查询订单
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询订单'
-      }
-      this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
-
-    // 切换路由
-    changeLabel: function(e) {
-      let routers = ['/unconsumed','/consumed','/unconfirmed','/refund'];
-      this.$router.push(routers[e]+'?index='+4);
     },
 
     handleCurrentChange(val) {

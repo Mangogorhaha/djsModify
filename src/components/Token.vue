@@ -24,13 +24,6 @@
       </tr>
     </table>
 
-    <!-- 路由选项 -->
-    <el-radio-group v-model="radio" @change="changeLabel(radio)">
-      <el-radio label="1">token收入明细</el-radio>
-      <el-radio label="0">token支出明细</el-radio>
-    </el-radio-group>
-    <el-button type="primary" @click.native='search' v-if="!searchPage">查询用户token</el-button>
-
     <!-- 充值记录数据 -->
     <el-table :data="tokenList.slice((page-1)*20,page*20)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
       <el-table-column prop="odr_internal" key="1" label="获取时间" min-width="130">
@@ -99,20 +92,6 @@ export default {
           this.listLoading = false;
         }
 			})
-    },
-    // 查询用户token
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询用户token'
-      }
-			this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
-
-    // 切换路由
-    changeLabel: function(e) {
-      // let routers = ['/acting','/finished'];
-      // this.$router.push(routers[e]+'?index='+5);
     },
 
     handleCurrentChange(val) {

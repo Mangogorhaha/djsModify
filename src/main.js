@@ -23,12 +23,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // if (to.path == '/login') {
-  //   localStorage.removeItem('cnckey');
-  // }
   let cnckey = '';
   if(localStorage.getItem('userInfo')){
     cnckey = JSON.parse(localStorage.getItem('userInfo')).cnckey;
+  }
+  if (to.path == '/') {
+    next({ path: '/login' })
   }
   if (!cnckey && to.path != '/login') {
     next({ path: '/login' })

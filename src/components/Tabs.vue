@@ -14,20 +14,20 @@
 			</el-form-item>
 		</el-form> -->
 		<!-- 数据内容 -->
-		<Shop :searchPage='searchPage' v-if="index == 0"></Shop>
+		<!-- <ShopList :searchPage='searchPage' v-if="index == 0"></ShopList>
 		<Comment :searchPage='searchPage' v-if="index == 1"></Comment>
 		<Drawout :searchPage='searchPage' v-if="index == 2"></Drawout>
 		<Recharge :searchPage='searchPage' v-if="index == 3"></Recharge>
 		<Order :searchPage='searchPage' v-if="index == 4"></Order>
 		<Coupon :searchPage='searchPage' v-if="index == 5"></Coupon>
 		<User :searchPage='searchPage' v-if="index == 6"></User>
-		<Token :searchPage='searchPage' v-if="index == 7"></Token>
-		<!-- <router-view :searchPage='searchPage'></router-view> -->
+		<Token :searchPage='searchPage' v-if="index == 7"></Token> -->
+		<router-view></router-view>
 	</section>
 </template>
 
 <script>
-import { Shop, Comment, Drawout, Recharge, Order, Coupon, User, Token } from './Tabs.js'
+import { ShopList, Comment, Drawout, Recharge, Order, Coupon, User, Token } from './Tabs.js'
 // import { Search } from '../api/api'
 
 	export default {
@@ -46,7 +46,7 @@ import { Shop, Comment, Drawout, Recharge, Order, Coupon, User, Token } from './
 			};
 		},
 		components: {
-			Shop,
+			ShopList,
 			Comment,
 			Drawout,
 			Recharge,

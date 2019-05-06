@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="8">
         <table class="apply">
-          <tr><td>统一社会信用代码：</td><td>{{examineInfo.lsn_code}}</td></tr>
+          <!-- <tr><td>统一社会信用代码：</td><td>{{examineInfo.lsn_code}}</td></tr>
           <tr><td>营业主体名称：</td><td>{{examineInfo.lsn_entity}}</td></tr>
           <tr><td>成立日期：</td><td>{{examineInfo.lsn_time}}</td></tr>
           <tr><td>执照负责人：</td><td>{{examineInfo.lsn_lname}}</td></tr>
@@ -14,7 +14,7 @@
           <tr><td>经营品种：</td><td>{{examineInfo.dsh_category}}</td></tr>
           <tr><td>所在省市区：</td><td>{{examineInfo.shp_location}}</td></tr>
           <tr><td>手机账号：</td><td>{{examineInfo.mobile}}</td></tr>
-          <tr><td>提交审核日期：</td><td>{{examineInfo.tme_log}}</td></tr>
+          <tr><td>提交审核日期：</td><td>{{examineInfo.tme_log}}</td></tr> -->
         </table>
 
         <div class="idImg" v-for="(item,index) in idImg" :key="index">
@@ -24,35 +24,35 @@
       <el-col :span="16" class="selectBox">
         <div>
           1. 统一社会信用代码是否真实存在？
-          <el-radio-group v-model="radio1" :disabled="radio=='1'">
+          <el-radio-group v-model="radio1">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
         <div>
           2. 营业主体名称与统一社会信用代码是否匹配？
-          <el-radio-group v-model="radio2" :disabled="radio=='1'">
+          <el-radio-group v-model="radio2">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
         <div>
           3. 成立日期是对的吗？
-          <el-radio-group v-model="radio3" :disabled="radio=='1'">
+          <el-radio-group v-model="radio3">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
         <div>
           4. 执照经营范围是否包含餐饮？
-          <el-radio-group v-model="radio4" :disabled="radio=='1'">
+          <el-radio-group v-model="radio4">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
         <div>
           5. 执照的经营状态是否正常？
-          <el-radio-group v-model="radio5" :disabled="radio=='1'">
+          <el-radio-group v-model="radio5">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">异常</el-radio>
           </el-radio-group>
@@ -67,7 +67,29 @@
 
 <script>
 export default {
-  
+  data() {
+    return {
+      examineInfo: [], //审核界面数据
+      editLoading: false,
+      idImg: [],
+      radio1: '',
+      radio2: '',
+      radio3: '',
+      radio4: '',
+      radio5: '',
+      auditList: [], //审核未通过详情信息
+    }
+  },
+  methods: {
+
+  },
+  created() {
+  },
+  computed: {
+    shpSqn() {
+      return this.$store.state.tabs.audit
+    }
+  }
 }
 </script>
 

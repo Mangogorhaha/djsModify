@@ -106,14 +106,6 @@ export default {
         }
 			})
     },
-    // 查询充值记录
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询充值'
-      }
-      this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
 
     handleCurrentChange(val) {
       this.page = val;

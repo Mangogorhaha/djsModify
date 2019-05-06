@@ -204,42 +204,6 @@ export default {
         }
 			})
     },
-    // 查询充值记录
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询用户'
-      }
-      this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
-    // 修改查询条件
-    changeValue: function(e) {
-      this.value = e;
-    },
-    //调用接口，传keyword后台返回数据
-    searchByKeyword: function() {
-      if(this.keyword == ''){
-        return false;
-      }
-      let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "search_status": this.value.toString(),
-        "condition": this.keyword,
-        "page": this.page.toString(),
-        "item": this.item.toString(),
-      }
-      UserListSearch(param).then(res => {
-        if (res.data.result == 0){
-          this.total = parseInt(res.data.total);
-          this.userList = res.data.list;
-        }else{
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          });
-        }
-      })
-    },
     
     // 显示用户信息
     showDetail: function(index, row){

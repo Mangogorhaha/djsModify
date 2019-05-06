@@ -108,20 +108,6 @@ export default {
         }
 			})
     },
-    // 查询优惠券
-    search: function(){
-      let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '查询优惠券'
-      }
-      this.$store.dispatch('search/setSearchStatus', searchInfo)
-    },
-
-    // 切换路由
-    changeLabel: function(e) {
-      let routers = ['/acting','/finished'];
-      this.$router.push(routers[e]+'?index='+5);
-    },
 
     handleCurrentChange(val) {
       this.page = val;

@@ -14,15 +14,6 @@
 			</el-form-item>
 		</el-form>
 
-    <!-- 路由选项 -->
-		<el-radio-group v-model="radio" @change="changeLabel(radio)">
-			<el-radio label="0">举报评论</el-radio>
-			<el-radio label="1">差评</el-radio>
-			<el-radio label="2">一般</el-radio>
-			<el-radio label="3">好评</el-radio>
-		</el-radio-group>
-		<el-button type="primary" @click.native='search' v-if="!searchPage">查询评论</el-button>
-
     <!-- 评论数据 -->
     <el-table :data="commentList.slice((page-1)*20,page*20)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border>
 			<el-table-column prop="tme_log" key="0" label="举报日期" min-width="160" sortable v-if="radio=='0'"></el-table-column>
@@ -152,42 +143,7 @@ export default {
         }
       })
 		},
-		// 查询评论
-    search: function(){
-			let searchInfo = {
-        isSearch: ++this.$store.state.search.searchInfo.isSearch,
-        searchTabName: '评论查询'
-      }
-			this.$store.dispatch('search/setSearchStatus', searchInfo)
-			console.log(this.$store.state.search)
-		},
-		// 修改查询条件
-    changeValue: function(e) {
-      this.value = e;
-    },
-    //TODO: 调用接口，传keyword后台返回数据
-    searchByKeyword: function() {
-      // let param = {
-      //   "cnckey": this.$store.state.user.userInfo.cnckey,
-      //   "shp_status": this.radio.toString(),
-      //   "condition_status": this.value.toString(),
-      //   "condition": this.keyword,
-      //   "page": this.page.toString(),
-      //   "item": this.item.toString(),
-      // }
-      // Search(param).then(res => {
-      //   console.log(res);
-      //   this.listData = res.data;
-      // })
-    },
 		
-    // 切换路由
-    changeLabel: function(e) {
-      if (!this.searchPage){
-				let routers = ['/report','/negative','/ordinary','/praise'];
-				this.$router.push(routers[e]+'?index='+1);
-			}else this.getList();
-    },
 
     //显示处理界面
     handleForm: function (index, row) {

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <table class="topTable" v-if="!searchPage">
+    <table class="topTable">
       <tr>
         <td class="t-tit">深圳市店铺数：</td>
         <td>0</td>
