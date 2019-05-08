@@ -8,22 +8,20 @@
           <el-option v-for="item in shpStatusOptions" :key="item.value" :label="item.name" :value="item.value"></el-option>
         </el-select>
 			</el-form-item>
-      <el-form-item label="营业状态">
-        <el-select v-model="businessStatus" clearable>
-          <el-option v-for="item in businessStatusOptions" :key="item.value" :label="item.name" :value="item.value"></el-option>
-        </el-select>
+      <el-form-item label="店铺编号">
+        <el-input v-model="shpCode" placeholder="店铺编号"></el-input>
 			</el-form-item>
       <el-form-item label="店铺名称">
-        <el-input v-model="shpNameText" placeholder="店铺名称"></el-input>
+        <el-input v-model="shpName" placeholder="店铺名称"></el-input>
 			</el-form-item>
-      <el-form-item label="用户账号">
-        <el-input v-model="mobileText" placeholder="用户账号"></el-input>
+      <el-form-item label="位置">
+        <el-input v-model="shpLocation" placeholder="位置"></el-input>
 			</el-form-item>
-      <el-form-item label="法人姓名">
-        <el-input v-model="nameText" placeholder="法人姓名"></el-input>
+      <el-form-item label="菜系">
+        <el-input v-model="dshCategory" placeholder="菜系"></el-input>
 			</el-form-item>
-      <el-form-item label="店铺申请时间">
-        <el-date-picker v-model="applyStime" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="applyEtime" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+      <el-form-item label="注册时间">
+        <el-date-picker v-model="tmeBegin" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="tmeEnd" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
@@ -37,12 +35,17 @@
     <el-table :data="shopList.slice((page-1)*item,page*item)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
       <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号"></el-table-column>
       <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称"></el-table-column>
-      <el-table-column key="3" prop="shp_location" min-width="130" label="省市区"></el-table-column>
-      <el-table-column key="4" prop="dsh_category" min-width="80" label="经营品种"></el-table-column>
-      <el-table-column key="5" prop="shp_status" min-width="110" label="状态"></el-table-column>
-      <el-table-column key="6" prop="tme_register" min-width="160" label="注册时间"></el-table-column>
+      <el-table-column key="3" prop="shp_location" min-width="130" label="位置"></el-table-column>
+      <el-table-column key="4" prop="dsh_category" min-width="80" label="菜系"></el-table-column>
+      <el-table-column key="5" prop="bkr_code" min-width="80" label="推荐店铺"></el-table-column>
+      <el-table-column key="6" prop="shp_status" min-width="110" label="状态"></el-table-column>
+      <el-table-column key="7" prop="amt_balance" min-width="80" label="资金金额"></el-table-column>
+      <el-table-column key="8" prop="amt_ready" min-width="80" label="待消费额"></el-table-column>
+      <el-table-column key="9" prop="amt_consumed" min-width="80" label="已消费额"></el-table-column>
+      <el-table-column key="10" prop="tkn_balance" min-width="80" label="省点余额"></el-table-column>
+      <el-table-column key="11" prop="tme_register" min-width="160" label="注册时间"></el-table-column>
 
-      <el-table-column key="9" label="操作" min-width="350">
+      <el-table-column key="12" label="操作" min-width="350">
 				<template slot-scope="scope">
           <el-button size="small" @click="shpAudit(scope.$index, scope.row)" v-if="scope.row.shp_status=='待审核'">审核</el-button>
 					<el-button size="small" @click="showDetail(scope.$index, scope.row)">详情</el-button>
@@ -64,31 +67,23 @@
 
     <!--分页栏-->
 		<el-col :span="24" class="toolbar">
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page" :page-size="8" :page-sizes="[8,10,20,50]" :total="total" style="float:right;">
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page" :page-size="item" :page-sizes="itemList" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
     
-    <!-- 营业中店铺详情 -->
-    <el-dialog title="店铺资料" :visible.sync="shopDetailVisible" width="75%">
-      <div class="content-container">
-        <el-col :span="24" class="content">
-          
-        </el-col>
-      </div>
-		</el-dialog>
   </section>
 </template>
 
 <script>
-import { ShopList, ShopExamine, ShopDetail, ShopListSearch } from '../../api/api';
+import { ShopList, ShopExamine, ShopDetail } from '../../api/api';
 
 export default {
   data() {
     return {
-      radio: '',
       total: 0,
       page: 1,
       item: 8, //每页显示数量
+      itemList: [8,10,20,50],
       listLoading: false,
       sels: [],//列表选中列
       shopList: [], //店铺列表
@@ -104,20 +99,12 @@ export default {
         { value: '6', name: '已注销' },
         { value: '7', name: '已冻结' }
       ],
-      businessStatus: '', // 营业状态
-      businessStatusOptions: [
-        { value: '0', name: '暂停营业' },
-        { value: '1', name: '营业中' }
-      ],
-      shpNameText: '', // 店铺名称
-      mobileText: '', // 手机账号
-      nameText: '', // 法人姓名
-      applyStime: '', // 店铺申请开始时间
-      applyEtime: '', // 店铺申请结束时间
-
-      shopDetail: [], //营业中店铺数据
-      shopDetailVisible: false,
-
+      shpCode: '', // 店铺编号
+      shpName: '', // 店铺名称
+      shpLocation: '', // 位置
+      dshCategory: '', // 菜系
+      tmeBegin: '', // 注册开始时间
+      tmeEnd: '', // 注册结束时间
     }
   },
   methods: {
@@ -126,13 +113,15 @@ export default {
       let that = this;
       let param = {
         "cnckey": this.$store.state.user.userInfo.cnckey,
+        "ifo_type": "0",
+        "dmy_sqn": "0",
+        "shp_code": this.shpCode,
+        "shp_name": this.shpName,
+        "shp_location": this.shpLocation,
+        "dsh_category": this.dshCategory,
         "shp_status": this.shpStatus == '' ? "-1" : this.shpStatus,
-        "business_status": this.businessStatus == '' ? "-1" : this.businessStatus,
-        "shp_name_text": this.shpNameText,
-        "mobile_text": this.mobileText,
-        "name_text": this.nameText,
-        "apply_stime": this.applyStime ? this.applyStime : "",
-        "apply_etime": this.applyEtime ? this.applyEtime : "",
+        "tme_begin": this.tmeBegin ? this.tmeBegin : "",
+        "tme_end": this.tmeEnd ? this.tmeEnd : "",
         "page": this.page.toString(),
         "item": this.item.toString()
       }
@@ -148,119 +137,51 @@ export default {
             type: 'error'
           });
         }
-      })      
+      }).catch(function (error) {
+        alert('连接超时');
+      });    
     },
 
     // 新建查询
     newSearch: function() {
       let newTab = {
-        name: '店铺列表',
-        route: '/shopList?index='+Math.random(),
+        name: '店铺列表'+(this.$store.state.tabs.tabs.length),
+        route: '/shopList',
       }
       this.$store.dispatch('tabs/addTabs', newTab)
-      this.$store.dispatch('tabs/setActive', newTab.route);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
       this.$router.push(newTab.route)
     },
     // 查看详情
     showDetail: function(index,row) {
-      let status = row.shp_status == '待审核' || row.shp_status == "审核未通过" || row.shp_status == "待开通" ? "0" : "1";
+      // let status = row.shp_status == '待审核' || row.shp_status == "审核未通过" || row.shp_status == "待开通" ? "0" : "1";
       let detailTab = {
-        route: '/shopDetail?shpCode='+row.shp_code,
+        route: '/shopDetail',
         name: row.shp_code + '',
-        status: status,
-        meta: { 'shpCode': row.shp_code }
+        shpSqn : row.shp_sqn
       }
       this.$store.dispatch('tabs/addTabs', detailTab);
-      this.$store.dispatch('tabs/setActive', detailTab.route);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
       this.$router.push(detailTab.route)
     },
     // 审核店铺
     shpAudit: function(index, row) {
-      this.$store.state.tabs.audit = row.shp_code + '';
-    },
-
-    //显示审核界面
-    isExamine: function (index, row) {
-      this.examineFormVisible = true;
-      // this.examineInfo = row;
-      
-      // 获取审核界面数据
-      let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "shp_sqn": row.shp_sqn.toString(),
-        "shp_status": this.radio
-      };
-      ShopDetail(param).then(res => {
-        if(res.data.result == 0){
-          this.examineInfo = res.data.base;
-          this.idImg = [{imgUrl: res.data.base.ID_back_url},{imgUrl: res.data.base.ID_front_url},{imgUrl: res.data.base.licence_url}];
-          if(this.radio == '1'){
-            this.audit = res.data.audit;
-            this.radio1 = parseInt(res.data.audit.flg_code);
-            this.radio2 = parseInt(res.data.audit.flg_entity);
-            this.radio3 = parseInt(res.data.audit.flg_time);
-            this.radio4 = parseInt(res.data.audit.flg_food);
-            this.radio5 = parseInt(res.data.audit.flg_valid);
-          }
-        }else{
-          this.$message({
-            message: res.data.message,
-            type: 'error'
-          });
-        }
-      })
-    },
-    //审核
-    examineSubmit: function () {
-      // 判断是否全部已选
-      if (this.radio1 === '' || this.radio2 === '' || this.radio3 === '' || this.radio4 === '' || this.radio5 === ''){
-        this.$alert('请确认选项！')
-        return;
+      let auditTab = {
+        route: '/shopAudit',
+        name: '审核店铺'+row.shp_code,
+        shpSqn : row.shp_sqn
       }
-      // 审核未通过界面radio不可选
-      let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "shp_sqn": this.examineInfo.shp_sqn.toString(),
-        "flg_code": this.radio1.toString(),
-        "flg_entity": this.radio2.toString(),
-        "flg_time": this.radio3.toString(),
-        "flg_food": this.radio4.toString(),
-        "flg_valid": this.radio5.toString(),
-      }
-      ShopExamine(param).then(res => {
-        if(res.data.result == 0){
-          this.$message({
-            message: res.data.message,
-            type: 'success'
-          });
-          this.examineFormVisible = false;
-          // 重新加载列表
-          this.getList();
-        }else{
-          this.$message({
-            message: '审核失败,原因：'+ res.data.message,
-            type: 'error'
-          });
-        }
-      })
+      this.$store.dispatch('tabs/addTabs', auditTab);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      this.$router.push(auditTab.route)
     },
 
-    // 营业中店铺详情
-    showShopDetail: function(index, row) {
-      //TODO: 获取营业中店铺详情
-      this.shopDetailVisible = true;
-      this.shpSqn = row.shp_sqn.toString();
-    },
-    // 侧边菜单栏数据（子组件传值）
-    getSideBar: function(val) {
-      this.sideBar = val;
-    },
-
+    // 切换当前页
     handleCurrentChange(val) {
       this.page = val;
       this.getList();
     },
-    //改变每页显示条数
+    // 改变每页显示条数
     handleSizeChange(val) {
       this.item = val;
       this.getList();
@@ -272,9 +193,6 @@ export default {
     handleselect: function (a, b) {
       this.index = a
     },
-
-    
-    
   },
   mounted() {
     this.getList();
@@ -305,80 +223,4 @@ export default {
 </script>
 
 <style scoped>
-
-/* 审核界面 */
-#dialog {
-	display: flex;
-	justify-content: space-between;
-}
-.apply {
-	background: #F0F0F0;
-	margin-right: 20px;
-}
-.apply td {
-	background: #fff;
-	width: 200px;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-}
-.apply td:first-child {
-	width: 160px;
-	text-align: right;
-}
-.idImg {
-	margin: 15px 15px 15px 0;
-	display: inline-block;
-}
-.idImg img{
-	/* width: 140px; */
-	height: 80px;
-}
-.selectBox {
-	width: 60%;
-	padding: 20px;
-	background: #F2F2F2;
-  position: relative;
-}
-.selectBox div {
-	line-height: 40px;
-	display: flex;
-	justify-content: space-between;
-}
-.selectBox .el-radio {
-	text-align: left;;
-	width: 60px;
-  margin-top: 12px;
-}
-.selectBox .el-row{
-  font-size: 12px;
-  color: #989898;
-  position: absolute;
-  bottom: 0;
-}
-.selectBox .el-col{
-  width: 300px;
-}
-
-/* 店铺详情 */
-.el-menu-item {
-  height: 50px;
-  line-height: 50px;
-  padding-left: 10px !important;
-}
-.content-container {
-  overflow: auto;
-}
-.content {
-  display: flex;
-}
-.content_l {
-  width: 160px;
-  margin-right: 20px;
-}
-.content_r {
-  flex: 1;
-  /* padding: 10px 20px; */
-  box-sizing: border-box;
-}
 </style>

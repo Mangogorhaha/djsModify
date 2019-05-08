@@ -1,5 +1,5 @@
 const state = {
-  audit: '', //审核店铺编号
+  isMenu: false, // 从菜单栏打开
   tabs: [], // 所有标签页
   activeIndex: '' // 当前激活页
 };
@@ -14,10 +14,10 @@ const mutations = {
     state.tabs.push(data);
   },
   // 删除tabs
-  deleteTabsIndex (state, route) {
+  deleteTabsIndex (state, activeIndex) {
     let index = 0;
-    for (let option of state.tabs) {
-      if (option.route === route) {
+    for (let i in state.tabs) {
+      if (i === activeIndex) {
         break;
       }
       index++;

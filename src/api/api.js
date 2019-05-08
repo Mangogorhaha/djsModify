@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-// axios.defaults.baseURL = 'http://5idjs.com';
+// axios.defaults.baseURL = 'http://api.5idjs.com';
 axios.defaults.baseURL = 'http://192.168.10.150:7001';
-axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.timeout = 5000;
 
 // 获取验证码
 export const GetCode = params => { return axios.post('/Adm_Acc_Code', params);}
@@ -11,36 +12,12 @@ export const Login = params => { return axios.post('/Adm_Acc_Login', params); }
 // 退出
 export const Logout = params => { return axios.post('/Adm_Acc_Quit', params); }
 
-// 查询列表
-export const ShopListSearch = params => { return axios.post('test_Adm_Shp_Search', params); }
 // 获取店铺列表
-// export const ShopList = params => { return axios.post('/Adm_Shp_List', params); };
-// export const ShopList = params => { return axios.post('/test_Adm_Shp_List', params); };
 export const ShopList = params => { return axios.post('/Adm_Shp_List', params); };
-// 审核界面数据
-// export const ShopDetail = params => { return axios.post('/Adm_Shp_Detail', params)}
-export const ShopDetail = params => { return axios.post('/test_Adm_Shp_Detail', params); }
+// 店铺详情和审核店铺页面数据
+export const ShopDetail = params => { return axios.post('/Adm_Shp_Detail', params); }
 // 审核店铺
-// export const ExamineShop = params => { return axios.post('/Adm_Shp_Verify', params); }
-export const ShopExamine = params => { return axios.post('/test_Adm_Shp_Audit', params); }
-// 邀请好友和邀请店铺
-export const ShopInvite = params => { return axios.post('/test_Adm_Detail_Ivt_List_ByVdr', params); }
-// 可提现余额
-export const ShopBalance = params => { return axios.post('/test_Adm_Detail_Withdraw_List', params); }
-// 待购买优惠券
-export const ShopCouponToBuy = params => { return axios.post('/test_Adm_Detail_Coupon_ToBuy_List', params); }
-// 待消费优惠券
-export const ShopcouponToConsume = params => { return axios.post('/test_Adm_Detail_Coupon_ToConsume_List', params); }
-// 营业收入
-export const ShopIncome = params => { return axios.post('/test_Adm_Detail_Income_List',  params); }
-// token
-export const ShopToken = params => { return axios.post('/test_Adm_Detail_Token', params); }
-// 评论
-export const ShopComment = params => { return axios.post('/test_Adm_Detail_CMT_List_ByVdr', params); }
-// 登录记录
-export const ShopLoginRecord = params => { return axios.post('/test_Adm_Detail_Ivt_List_ByVdr', params); }
-// 品牌故事
-export const ShopBrandStory = params => { return axios.post('/test_Adm_Detail_Shop_Story', params); }
+export const ShopAudit= params => { return axios.post('/Adm_Shp_Verify', params); }
 
 // 评价列表
 export const GetCommentList = params => { return axios.post('/Adm_Cmt_List', params); }

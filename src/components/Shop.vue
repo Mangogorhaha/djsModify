@@ -196,8 +196,8 @@
 </template>
 
 <script>
-import { ShopList, ShopExamine, ShopDetail, ShopListSearch } from '../api/api';
-import { sshopInfo, sinviteFriend, sinviteShop, sbalance, scouponToBuy, scouponToConsume, sincome, stoken, scomment, sloginRecord, sbrandStory } from './shopDetail/shopDetail'
+import { ShopList, ShopDetail, } from '../api/api';
+// import { sshopInfo, sinviteFriend, sinviteShop, sbalance, scouponToBuy, scouponToConsume, sincome, stoken, scomment, sloginRecord, sbrandStory } from './shopDetail/shopDetail'
 
 export default {
   data() {
@@ -238,19 +238,19 @@ export default {
       value: '0',
     }
   },
-  components: {
-    sshopInfo,
-    sinviteFriend,
-    sinviteShop,
-    sbalance,
-    scouponToBuy,
-    scouponToConsume,
-    sincome,
-    stoken,
-    scomment,
-    sloginRecord,
-    sbrandStory
-  },
+  // components: {
+  //   sshopInfo,
+  //   sinviteFriend,
+  //   sinviteShop,
+  //   sbalance,
+  //   scouponToBuy,
+  //   scouponToConsume,
+  //   sincome,
+  //   stoken,
+  //   scomment,
+  //   sloginRecord,
+  //   sbrandStory
+  // },
   props: {
     searchPage: {
       type: Boolean,

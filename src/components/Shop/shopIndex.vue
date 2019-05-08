@@ -40,10 +40,11 @@ export default {
     line-height: 25px;
     td{
       width: 150px;
-      .t-tit {
-        background: lightblue;
-        text-align: right;
-      }
+    }
+    // td:nth-child()
+    .t-tit {
+      background: lightblue;
+      text-align: right;
     }
   }
 }

@@ -33,7 +33,7 @@
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" class="content-wrapper">
 						<el-tabs v-model="activeIndex" type="card" @tab-remove="tabRemove" @tab-click='tabClick'>
-							<el-tab-pane :label="item.name" :name="item.route" v-for="(item, index) in tabs" :key="item.route+index" closable>
+							<el-tab-pane :label="item.name" :name="index + ''" v-for="(item, index) in tabs" :key="index" closable>
 								<transition name="fade" mode="out-in">
 									<router-view :item="item"></router-view>
 								</transition>
@@ -64,6 +64,7 @@ import { Logout } from '../api/api';
 		},
 		methods: {
 			handleselect: function (a, b) {
+				this.$store.state.tabs.isMenu = true;
 			},
 			//退出登录
 			logout: function () {
@@ -94,23 +95,37 @@ import { Logout } from '../api/api';
 			},
 
 			//tab标签点击时，切换相应的路由
-			tabClick(tab){
-				this.$router.push(this.activeIndex);
+			tabClick(currentTab){
+				let tabs = this.tabs;
+				for (let index in tabs){
+					index = parseInt(index)
+					if(tabs[index].name === currentTab.label){
+						this.$store.dispatch('tabs/setActive', index+'');
+						this.$router.push(tabs[index].route)
+						break;
+					}
+				}
 			},
 			//移除tab标签
 			tabRemove(targetName){
 				let tabs = this.tabs;
 				if (tabs && tabs.length > 1) {
 					if (this.activeIndex === targetName) { //删除页为当前页
-						tabs.forEach((tab, index) => {
-							if (tab.route === targetName) {
-								let activeTab = tabs[index + 1] || tabs[index - 1];
-								if (activeTab) {
-									this.$store.dispatch('tabs/setActive', activeTab.route);
-									this.$router.push({path: activeTab.route});
+						for (let index in tabs) {
+							if (index === targetName){
+								let activeTab = index == 0 ? tabs[parseInt(index)] : tabs[parseInt(index) + 1] || tabs[parseInt(index) - 1];
+								if (activeTab){
+									this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === activeTab.name)+'')
+									this.$router.push(activeTab.route)
 								}
 							}
-						});
+						}
+					}else {
+						let activeTab = parseInt(this.activeIndex) > parseInt(targetName) ? tabs[parseInt(this.activeIndex) - 1] : tabs[parseInt(this.activeIndex)];
+						if (activeTab){
+							this.$router.push(tabs[parseInt(this.activeIndex)].route)
+							this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === activeTab.name)+'')
+						}
 					}
 					this.$store.dispatch('tabs/deleteTabs', targetName);
 				}
@@ -129,35 +144,49 @@ import { Logout } from '../api/api';
 			this.sysUserName = this.$store.state.user.userInfo.userName
 			this.sysUserAvatar = {imgUrl:require('../assets/avatar.jpg')};
 			// 刷新时以当前路由做为tab加入tabs
-			if(this.tabs.length > 0) {
-				for(let item of this.$store.state.tabs.tabs){
-					if(item.title === to.name){
-						this.$store.dispatch('tabs/setActive',to.path)
+			if (this.tabs && this.tabs.length > 0) {
+				for (let index in this.tabs){
+					index = parseInt(index)
+					if (this.tabs[index].route === this.$route.path){
+						this.$store.dispatch('tabs/setActive', index+'');
 						break;
 					}
 				}
 			}else {
-				this.$store.dispatch('tabs/addTabs', {route: this.$route.path, name: this.$route.name });
-				this.$store.dispatch('tabs/setActive', this.$route.path);
+				this.$router.push('/shopIndex')
+				this.$store.dispatch('tabs/addTabs', { route: this.$route.path, name: this.$route.name })
+				this.$store.dispatch('tabs/setActive', '0')
 			}
 		},
 		watch: {
 			$route (to, from){
-				let flag = false;
+				console.log('route is changing');
 				
+				let flag = false;
 				// 判断是否已打开标签页
-        for(let item of this.tabs){
-          if(item.name === to.name){
-						if (to.path.indexOf('?') == -1){
-							this.$store.dispatch('tabs/setActive',to.path)
+				let tabs = this.tabs;
+				for (let index in tabs){
+					index = parseInt(index)
+					// 从侧边菜单栏打开
+					if (this.$store.state.tabs.isMenu) {
+						if (tabs[index].route === to.path) {
+							this.$store.dispatch('tabs/setActive', index+'');
+							flag = true;
+							this.$store.state.tabs.isMenu = false;
+							break;
+						}
+					}else {
+						if (tabs[index].route === to.path) {
+							this.$store.dispatch('tabs/setActive', this.activeIndex);
 							flag = true;
 							break;
 						}
-          }
-        }
+					}
+				}
         if(!flag){
           this.$store.dispatch('tabs/addTabs', {route: to.path, name: to.name});
-          this.$store.dispatch('tabs/setActive', to.path);
+					this.$store.dispatch('tabs/setActive', this.tabs.length-1);
+					this.$router.push(this.tabs[this.tabs.length-1].route)
         }
 			}
 		},
@@ -170,7 +199,7 @@ import { Logout } from '../api/api';
 					return this.$store.state.tabs.activeIndex;
 				},
 				set (val) {
-					this.$store.dispatch('tabs/setActive', val);
+					this.$store.dispatch('tabs/setActive', val+'');
 				}
 			}
 		}
