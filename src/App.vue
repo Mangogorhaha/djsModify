@@ -27,9 +27,6 @@ export default {
 body {
 	margin: 0px;
 	padding: 0px;
-	/*background: url(assets/bg1.jpg) center !important;
-		background-size: cover;*/
-	// background: #1F2D3D;
 	font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
 	font-size: 14px;
 	-webkit-font-smoothing: antialiased;
@@ -55,7 +52,6 @@ body {
 .toolbar {
 	background: #f2f2f2;
 	padding: 10px;
-	//border:1px solid #dfe6ec;
 	margin: 10px 0px;
 	.el-form-item {
 		margin-bottom: 10px;
@@ -75,25 +71,21 @@ body {
 .el-table {
 	margin-top: 20px;
 }
-// 营业中店铺信息弹窗的title
-.dialog_title {
-	font-weight: bold;
-	padding-bottom: 10px;
-  border-bottom: 1px solid #F2F2F2;
-}
+
 // 搜索框
 .searchForm {
 	margin-top: 20px;
+	.el-select {
+		width: 130px;
+	}
 }
-.searchForm .el-select {
-  width: 130px;
-}
-
-.FF6600 {
-	color: #FF6600;
-}
-.FF3300 {
-	color: #FF3300;
+// 图片预览样式
+.viewer-container {
+  width: 55% !important;
+	left: 45% !important;
+	.viewer-canvas img {
+		margin-left: auto !important;
+	}
 }
 
 </style>

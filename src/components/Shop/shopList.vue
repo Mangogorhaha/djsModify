@@ -67,7 +67,7 @@
 
     <!--分页栏-->
 		<el-col :span="24" class="toolbar">
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page" :page-size="item" :page-sizes="itemList" :total="total" style="float:right;">
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-size="item" :page-sizes="itemList" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
     
@@ -82,8 +82,8 @@ export default {
     return {
       total: 0,
       page: 1,
-      item: 8, //每页显示数量
-      itemList: [8,10,20,50],
+      item: 3, //每页显示数量
+      itemList: [3,10,20,50],
       listLoading: false,
       sels: [],//列表选中列
       shopList: [], //店铺列表
@@ -130,15 +130,15 @@ export default {
         if (res.data.result == 0){
           that.total = parseInt(res.data.total);
           that.shopList = res.data.list;
-          that.listLoading = false;
+          that.listLoading = false;          
         }else{
           that.$message({
             message: res.data.message,
             type: 'error'
           });
         }
-      }).catch(function (error) {
-        alert('连接超时');
+      }).catch(err => {
+        that.$alert('请求超时，刷新重试！')
       });    
     },
 
@@ -208,11 +208,6 @@ export default {
   
   },
   watch: {
-    keyword() {
-      if(this.keyword == ''){
-        this.getList();
-      }
-    },
     $route (to, from){
     }
   },

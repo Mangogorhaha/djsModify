@@ -35,7 +35,9 @@
 						<el-tabs v-model="activeIndex" type="card" @tab-remove="tabRemove" @tab-click='tabClick'>
 							<el-tab-pane :label="item.name" :name="index + ''" v-for="(item, index) in tabs" :key="index" closable>
 								<transition name="fade" mode="out-in">
-									<router-view :item="item"></router-view>
+									<keep-alive>
+										<router-view :item="item"></router-view>
+									</keep-alive>
 								</transition>
 							</el-tab-pane>
 						</el-tabs>
@@ -113,10 +115,11 @@ import { Logout } from '../api/api';
 					if (this.activeIndex === targetName) { //删除页为当前页
 						for (let index in tabs) {
 							if (index === targetName){
-								let activeTab = index == 0 ? tabs[parseInt(index)] : tabs[parseInt(index) + 1] || tabs[parseInt(index) - 1];
+								// let activeTab = index == 0 ? tabs[parseInt(index)] : tabs[parseInt(index) + 1] || tabs[parseInt(index) - 1];
+								let activeTab = index == tabs.length-1 ? tabs[parseInt(index) - 1] : tabs[parseInt(index)];
 								if (activeTab){
 									this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === activeTab.name)+'')
-									this.$router.push(activeTab.route)
+									this.$router.push(index == tabs.length-1 ? activeTab.route :  tabs[parseInt(targetName)+1].route)
 								}
 							}
 						}

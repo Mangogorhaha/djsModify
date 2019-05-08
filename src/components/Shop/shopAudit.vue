@@ -53,49 +53,52 @@
           </tr>
         </table>
 
-        <div class="idImg" v-for="(item,index) in idImg" :key="index">
+        <!-- <div class="idImg" v-for="(item,index) in idImg" :key="index">
           <img :src="item.imgUrl">
-        </div>
+        </div> -->
+        <viewer :images="idImg" class="idImg">
+          <img v-for="(item,index) in idImg" :src="item.imgUrl" :key="index">
+        </viewer>
       </el-col>
       <el-col :span="14">
         <section class="selectBox">
           <div>
             1. 统一社会信用代码是否真实存在？
-            <el-radio-group v-model="radio1">
+            <el-radio-group v-model="radio1" :disabled="isAudit">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </div>
           <div>
             2. 营业主体名称与统一社会信用代码是否匹配？
-            <el-radio-group v-model="radio2">
+            <el-radio-group v-model="radio2" :disabled="isAudit">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </div>
           <div>
             3. 成立日期是对的吗？
-            <el-radio-group v-model="radio3">
+            <el-radio-group v-model="radio3" :disabled="isAudit">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </div>
           <div>
             4. 执照经营范围是否包含餐饮？
-            <el-radio-group v-model="radio4">
+            <el-radio-group v-model="radio4" :disabled="isAudit">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </div>
           <div>
             5. 执照的经营状态是否正常？
-            <el-radio-group v-model="radio5">
+            <el-radio-group v-model="radio5" :disabled="isAudit">
               <el-radio :label="1">正常</el-radio>
               <el-radio :label="0">异常</el-radio>
             </el-radio-group>
           </div>
 
-          <el-button type="primary" @click.native="examineSubmit">提交</el-button>
+          <el-button type="primary" @click.native="auditShop" v-if="!isAudit">提交</el-button>
         </section>
       </el-col>
     </el-row>
@@ -110,6 +113,7 @@ export default {
     return {
       dataList: [], //审核界面数据
       idImg: [],
+      isAudit: false,
       radio1: "",
       radio2: "",
       radio3: "",
@@ -164,13 +168,12 @@ export default {
       });
     },
     //审核
-    examineSubmit: function() {
+    auditShop: function() {
       // 判断是否全部已选
       if (this.radio1 === "" || this.radio2 === "" || this.radio3 === "" || this.radio4 === "" || this.radio5 === "") {
         this.$alert("请确认选项！");
         return;
       }
-      // 审核未通过界面radio不可选
       let param = {
         "cnckey": this.$store.state.user.userInfo.cnckey,
         "shp_sqn": this.dataList.shp_sqn.toString(),
@@ -193,9 +196,8 @@ export default {
             message: res.data.message,
             type: "success"
           });
-          this.examineFormVisible = false;
-          // 重新加载列表
-          this.getList();
+          // 审核完成后radio不可选
+          this.isAudit = true;
         } else {
           this.$message({
             message: "审核失败,原因：" + res.data.message,
@@ -208,7 +210,6 @@ export default {
   created() {
     this.getList();
   },
-  computed: {}
 };
 </script>
 
@@ -232,9 +233,8 @@ export default {
   }
 }
 .idImg {
-  margin: 15px 15px 15px 0;
-  display: inline-block;
   img {
+    margin: 15px 15px 15px 0;
     height: 80px;
   }
 }
