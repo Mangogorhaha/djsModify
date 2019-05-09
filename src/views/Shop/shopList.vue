@@ -32,7 +32,7 @@
 		</el-form>
 
     <!-- 店铺数据 -->
-    <el-table :data="shopList.slice((page-1)*item,page*item)" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
+    <el-table :data="shopList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
       <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号"></el-table-column>
       <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称"></el-table-column>
       <el-table-column key="3" prop="shp_location" min-width="130" label="位置"></el-table-column>
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { ShopList, ShopExamine, ShopDetail } from '../../api/api';
+import { ShopList } from '../../api/api';
 
 export default {
   data() {
@@ -188,10 +188,6 @@ export default {
     },
     selsChange: function (sels) {
       this.sels = sels;
-    },
-    // 切换营业中店铺详情组件显示
-    handleselect: function (a, b) {
-      this.index = a
     },
   },
   mounted() {

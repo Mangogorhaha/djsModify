@@ -12,26 +12,35 @@ export const Login = params => { return axios.post('/Adm_Acc_Login', params); }
 // 退出
 export const Logout = params => { return axios.post('/Adm_Acc_Quit', params); }
 
-// 获取店铺列表
+// 店铺管理模块
+export const ShopIndex = params => { return axios.post('/Adm_Shp_Main', params); }
 export const ShopList = params => { return axios.post('/Adm_Shp_List', params); };
-// 店铺详情和审核店铺页面数据
+// 店铺详情0审核 1执照 2基本
 export const ShopDetail = params => { return axios.post('/Adm_Shp_Detail', params); }
-// 审核店铺
-export const ShopAudit= params => { return axios.post('/Adm_Shp_Verify', params); }
+export const ShopAudit = params => { return axios.post('/Adm_Shp_Verify', params); }
 
-// 评价列表
-export const GetCommentList = params => { return axios.post('/Adm_Cmt_List', params); }
-// 评价处理界面数据
-export const HandleForm = params => { return axios.post('/Adm_Cmt_Detail', params); }
-// 举报处理
-export const HandleReport = params => { return axios.post('/Adm_Cmt_Verify', params); }
+// 评价管理模块
+export const CommentIndex = params => { return axios.post('/Adm_Cmt_Main', params); }
+export const CommentList = params => { return axios.post('/Adm_Cmt_List', params); }
+export const CommentDetail = params => { return axios.post('/Adm_Cmt_Detail', params); }
+export const CommentAduit = params => { return axios.post('/Adm_Cmt_Verify', params); }
 
-// 提现记录列表
-export const GetDrawoutList = params => { return axios.post('/Adm_Pay_List', params); }
-// 银行卡提现
-export const CardDrawout = params => { return axios.post('/Adm_Pay_Done', params); }
+// 资产管理模块
+export const AssetIndex = params => { return axios.post('/Adm_Pay_Main', params); }
+export const AssetList = params => { return axios.post('/Adm_Pay_List', params); }
+export const AssetWithdraw = params => { return axios.post('/Adm_Pay_Done', params); }
 
-// 用户管理列表
-export const UserList = params => { return axios.post('/test_Adm_User_List', params); }
-export const UserInfo = params => { return axios.post('/test_Adm_User_Detail', params); }
-export const UserListSearch = params => { return axios.post('test_Adm_User_Search', params); }
+// 活动管理模块
+export const ActiveIndex = params => { return axios.post('/Adm_Evt_Main', params); }
+export const ActiveList = params => { return axios.post('/Adm_Evt_List', params); }
+export const ActiveDetail = params => { return axios.post('/Adm_Evt_Detail', params); }
+
+// 订单管理模块
+export const OrderIndex = params => { return axios.post('/Adm_Odr_Main', params); }
+export const OrderList = params => { return axios.post('/Adm_Odr_List', params); }
+// export const OrderDetail = params => { return axios.post('/Adm_Evt_Detail', params); }
+
+// 用户管理模块
+export const UserIndex = params => { return axios.post('/Adm_Usr_Main', params); }
+export const UserList = params => { return axios.post('/Adm_Usr_List', params); }
+export const UserDetail = params => { return axios.post('/Adm_Usr_Detail', params); }

@@ -82,10 +82,9 @@ export default {
   methods: {
     getList: function(){
       let that = this;
-      const shpSqn = this.item.shpSqn;
       let param = {
         "cnckey": this.$store.state.user.userInfo.cnckey,
-        "shp_sqn": shpSqn,
+        "shp_sqn": this.item.shpSqn,
         "ifo_type": this.tabValue
       }
       ShopDetail(param).then(res => {

@@ -85,7 +85,7 @@
 
 <script>
 // todo 提现接口换成充值接口
-import { GetDrawoutList, CardDrawout } from '../api/api';
+// import { GetDrawoutList, CardDrawout } from '../api/api';
 
 export default {
   data() {
