@@ -4,13 +4,13 @@
     <!-- 搜索框 -->
 		<el-form :inline="true" class="searchForm">
       <el-form-item label="账户编号">
-        <el-input v-model="dmyCode" placeholder="用户编号"></el-input>
+        <el-input v-model="dmyCode" placeholder="用户编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="手机号码">
-        <el-input v-model="usrMobile" placeholder="手机号码"></el-input>
+        <el-input v-model="usrMobile" placeholder="手机号码" clearable></el-input>
 			</el-form-item>
       <el-form-item label="订单编号">
-        <el-input v-model="odrInternal" placeholder="订单编号"></el-input>
+        <el-input v-model="odrInternal" placeholder="订单编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="资产类型">
         <el-select v-model="splType" clearable>
@@ -27,19 +27,21 @@
           <el-option v-for="item in payStatusOptions" :key="item.value" :label="item.name" :value="item.value"></el-option>
         </el-select>
 			</el-form-item>
+		</el-form>
+    <el-form :inline="true">
       <el-form-item label="注册时间">
         <el-date-picker v-model="tmeBegin" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="tmeEnd" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 			</el-form-item>
-			<el-form-item>
+      <el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
 			</el-form-item>
       <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
 			</el-form-item>
-		</el-form>
+    </el-form>
 
     <!-- 资产数据 -->
-    <el-table :data="assetList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
+    <el-table :data="assetList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
       <el-table-column key="1" prop="dmy_code" min-width="80" label="账户编号"></el-table-column>
       <el-table-column key="2" prop="usr_mobile" min-width="130" label="手机号码"></el-table-column>
       <el-table-column key="4" prop="odr_internal" min-width="130" label="订单编号"></el-table-column>
@@ -90,7 +92,7 @@ export default {
       itemList: [10,20,50],
       listLoading: false,
       sels: [],//列表选中列
-      assetList: [], //用户列表
+      assetList: [], //资产列表
 
       dmyCode: '', // 店铺or用户编号
       usrMobile: '', // 手机号码
@@ -119,12 +121,11 @@ export default {
     }
   },
   methods: {
-    // 获取店铺列表数据
+    // 获取资产列表数据
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "ifo_type": "1",
+        "ifo_type": "-1",
         "dmy_sqn": "1",
         "dmy_code": this.dmyCode,
         "usr_mobile": this.usrMobile,

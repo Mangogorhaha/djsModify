@@ -4,11 +4,13 @@
     <!-- 搜索框 -->
 		<el-form :inline="true" class="searchForm">
       <el-form-item label="用户编号">
-        <el-input v-model="usrCode" placeholder="用户编号"></el-input>
+        <el-input v-model="usrCode" placeholder="用户编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="手机号码">
-        <el-input v-model="usrMobile" placeholder="手机号码"></el-input>
+        <el-input v-model="usrMobile" placeholder="手机号码" clearable></el-input>
 			</el-form-item>
+		</el-form>
+    <el-form :inline="true">
       <el-form-item label="注册时间">
         <el-date-picker v-model="tmeBegin" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="tmeEnd" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 			</el-form-item>
@@ -18,13 +20,13 @@
       <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
 			</el-form-item>
-		</el-form>
+    </el-form>
 
     <!-- 用户数据 -->
-    <el-table :data="userList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
+    <el-table :data="userList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
       <el-table-column key="1" prop="usr_code" min-width="80" label="用户编号"></el-table-column>
       <el-table-column key="2" prop="usr_mobile" min-width="130" label="手机号码"></el-table-column>
-      <el-table-column key="3" prop="usr_nick" min-width="130" label="昵称"></el-table-column>
+      <el-table-column key="3" prop="usr_nick" min-width="130" label="昵称" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="4" prop="bkr_code" min-width="80" label="推荐人"></el-table-column>
       <el-table-column key="5" prop="usr_status" min-width="80" label="状态">
         <template slot-scope="scope">
@@ -85,11 +87,10 @@ export default {
     }
   },
   methods: {
-    // 获取店铺列表数据
+    // 获取用户列表数据
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "ifo_type": "1",
         "dmy_sqn": "1",
         "usr_code": this.usrCode,

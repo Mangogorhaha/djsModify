@@ -20,7 +20,7 @@ import activeList from '@/views/Active/activeList.vue'
 import activeDetail from '@/views/Active/activeDetail.vue'
 // 订单
 import orderIndex from '@/views/Order/orderIndex.vue'
-import orderList from '@/views/Order/orderIndex.vue'
+import orderList from '@/views/Order/orderList.vue'
 // 用户
 import userIndex from '@/views/User/userIndex.vue'
 import userList from '@/views/User/userList.vue'

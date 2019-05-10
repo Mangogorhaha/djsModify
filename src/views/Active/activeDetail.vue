@@ -32,7 +32,6 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "evt_sqn": this.item.usrSqn
       }
       ActiveDetail(param).then(res => {

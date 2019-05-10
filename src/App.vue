@@ -71,6 +71,30 @@ body {
 .el-table {
 	margin-top: 20px;
 }
+// 首页e_chart样式
+.chart_item {
+	margin-top: 50px;
+}
+// 首页顶部表格
+.topTable {
+	margin: 20px 0;
+	border: 1px solid #F2F2F2;
+  tr{
+    height: 25px;
+    line-height: 25px;
+    td{
+      width: 150px;
+    }
+    td:nth-child(odd) {
+      background: lightblue;
+      text-align: right;
+    }
+    td:nth-child(even) {
+      box-sizing: border-box;
+      padding-left: 10px;
+    }
+  }
+}
 
 // 搜索框
 .searchForm {

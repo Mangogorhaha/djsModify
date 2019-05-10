@@ -32,7 +32,7 @@ export default {
       ruleForm: {
         account: 'admin',
         psd: '888888',
-        code: '3F6C29',
+        code: '2433E',
       },
       rules: {
         account: [{ required: true, message: '请输入账号', trigger: 'blur' },],

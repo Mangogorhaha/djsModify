@@ -29,7 +29,6 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "usr_sqn": this.item.usrSqn
       }
       UserDetail(param).then(res => {

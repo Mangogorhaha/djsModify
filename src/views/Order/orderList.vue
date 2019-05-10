@@ -4,37 +4,39 @@
     <!-- 搜索框 -->
 		<el-form :inline="true" class="searchForm">
       <el-form-item label="店铺编号">
-        <el-input v-model="shpCode" placeholder="店铺编号"></el-input>
+        <el-input v-model="shpCode" placeholder="店铺编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="店铺名称">
-        <el-input v-model="shpName" placeholder="店铺名称"></el-input>
+        <el-input v-model="shpName" placeholder="店铺名称" clearable></el-input>
 			</el-form-item>
       <el-form-item label="用户账号">
-        <el-input v-model="usrMobile" placeholder="用户账号"></el-input>
+        <el-input v-model="usrMobile" placeholder="用户账号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="订单编号">
-        <el-input v-model="odrInternal" placeholder="订单编号"></el-input>
+        <el-input v-model="odrInternal" placeholder="订单编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="状态">
         <el-select v-model="odrStatus" clearable>
           <el-option v-for="item in odrStatusOptions" :key="item.value" :label="item.name" :value="item.value"></el-option>
         </el-select>
 			</el-form-item>
+		</el-form>
+    <el-form :inline="true">
       <el-form-item label="交易时间">
         <el-date-picker v-model="tmeBegin" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="tmeEnd" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 			</el-form-item>
-			<el-form-item>
+      <el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
 			</el-form-item>
       <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
 			</el-form-item>
-		</el-form>
+    </el-form>
 
-    <!-- 用户数据 -->
-    <el-table :data="orderList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
+    <!-- 订单数据 -->
+    <el-table :data="orderList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
       <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号"></el-table-column>
-      <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称"></el-table-column>
+      <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="3" prop="usr_mobile" min-width="130" label="用户账号"></el-table-column>
       <el-table-column key="4" prop="odr_internal" min-width="130" label="订单编号"></el-table-column>
       <el-table-column key="5" prop="cpn_prefix" min-width="130" label="活动编号"></el-table-column>
@@ -79,7 +81,7 @@ export default {
       itemList: [10,20,50],
       listLoading: false,
       sels: [],//列表选中列
-      orderList: [], //活动列表
+      orderList: [], //订单列表
 
       shpCode: '', // 店铺编号
       shpName: '',  // 店铺名称
@@ -96,12 +98,11 @@ export default {
     }
   },
   methods: {
-    // 获取店铺列表数据
+    // 获取订单列表数据
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "ifo_type": "1",
+        "ifo_type": "-1",
         "dmy_sqn": "1",
         "shp_code": this.shpCode,
         "shp_name": this.shpName,

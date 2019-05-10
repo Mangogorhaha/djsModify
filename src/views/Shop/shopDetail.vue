@@ -82,8 +82,8 @@ export default {
   methods: {
     getList: function(){
       let that = this;
+      if (!this.item.shpSqn) return false;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "shp_sqn": this.item.shpSqn,
         "ifo_type": this.tabValue
       }

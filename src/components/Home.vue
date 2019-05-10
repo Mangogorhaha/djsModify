@@ -74,8 +74,8 @@ import { Logout } from '../api/api';
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					let cnckey = this.$store.state.user.userInfo.cnckey;
-					Logout({"cnckey": cnckey}).then(res => {
+					// let cnckey = this.$store.state.user.userInfo.cnckey;
+					Logout().then(res => {
 						console.log(res.data.message)
 						localStorage.removeItem('userInfo'); //清除本地保存cnckey
 						_this.$router.push('/login');

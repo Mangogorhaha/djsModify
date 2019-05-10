@@ -12,12 +12,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
+import VCharts from 'v-charts'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(VCharts)
 Vue.prototype.$axios = axios
 
 //Vue.use(Viewer) 默认配置写法
@@ -52,6 +54,7 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
+  // components: { App },
+  // template: '<App/>'
+  render: h => h(App)
 })

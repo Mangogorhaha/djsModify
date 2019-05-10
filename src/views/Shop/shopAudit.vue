@@ -138,7 +138,6 @@ export default {
     getList: function() {
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "shp_sqn": this.item.shpSqn,
         "ifo_type": "0"
       };
@@ -175,7 +174,6 @@ export default {
         return;
       }
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "shp_sqn": this.dataList.shp_sqn.toString(),
         "flg_code": this.radio1.toString(),
         "flg_entity": this.radio2.toString(),
