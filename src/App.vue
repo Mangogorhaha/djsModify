@@ -70,6 +70,11 @@ body {
 
 .el-table {
 	margin-top: 20px;
+	.blue {
+		color: #2598FB;
+		text-decoration: underline;
+		cursor: pointer;
+	}
 }
 // 首页e_chart样式
 .chart_item {
@@ -83,7 +88,7 @@ body {
     height: 25px;
     line-height: 25px;
     td{
-      width: 150px;
+      width: 120px;
     }
     td:nth-child(odd) {
       background: lightblue;

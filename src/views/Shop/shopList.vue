@@ -35,24 +35,42 @@
 
     <!-- 店铺数据 -->
     <el-table :data="shopList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
-      <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号" @click="showDetail(1,1)"></el-table-column>
+      <el-table-column key="1" min-width="80" label="店铺编号">
+        <template slot-scope="scope">
+          <span class="blue" @click="showDetail(scope.$index, scope.row)">{{scope.row.shp_code}}</span>
+        </template>
+      </el-table-column>
       <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column key="3" prop="shp_location" min-width="130" label="位置" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column key="4" prop="dsh_category" min-width="80" label="菜系" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column key="3" prop="shp_location" min-width="140" label="位置" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column key="4" prop="dsh_category" min-width="100" label="菜系" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="5" prop="bkr_code" min-width="80" label="推荐店铺" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="6" prop="shp_status" min-width="110" label="状态"></el-table-column>
       <el-table-column key="7" prop="amt_balance" min-width="80" label="资金金额"></el-table-column>
-      <el-table-column key="8" prop="amt_ready" min-width="80" label="待消费额"></el-table-column>
-      <el-table-column key="9" prop="amt_consumed" min-width="80" label="已消费额"></el-table-column>
-      <el-table-column key="10" prop="tkn_balance" min-width="80" label="省点余额"></el-table-column>
+      <el-table-column key="8" min-width="80" label="待消费额">
+        <template slot-scope="scope">
+          <span class="blue" @click="showOrder(scope.$index, scope.row)">{{scope.row.amt_ready}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column key="9" min-width="80" label="已消费额">
+        <template slot-scope="scope">
+          <span class="blue" @click="showOrder(scope.$index, scope.row)">{{scope.row.amt_consumed}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column key="10" min-width="80" label="省点余额">
+        <template slot-scope="scope">
+          <span class="blue" @click="showAsset(scope.$index, scope.row)">{{scope.row.tkn_balance}}</span>
+        </template>
+      </el-table-column>
       <el-table-column key="11" prop="tme_register" min-width="160" label="注册时间"></el-table-column>
 
-      <el-table-column key="12" label="操作" min-width="350">
+      <el-table-column key="12" label="操作" min-width="160">
 				<template slot-scope="scope">
           <el-button size="small" @click="shpAudit(scope.$index, scope.row)" v-if="scope.row.shp_status=='待审核'">审核</el-button>
-					<el-button size="small" @click="showDetail(scope.$index, scope.row)" v-else>详情</el-button>
-					<el-button size="small">营业收入列表</el-button>
-          <el-dropdown>
+					<!-- <el-button size="small" @click="showDetail(scope.$index, scope.row)" v-else>详情</el-button> -->
+					<!-- <el-button size="small">消费额</el-button>
+					<el-button size="small">省点余额</el-button> -->
+					<el-button size="small" v-else>邀请的店铺</el-button>
+          <!-- <el-dropdown>
             <el-button size="small">
               更多<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
@@ -62,7 +80,7 @@
               <el-dropdown-item>优惠券列表</el-dropdown-item>
               <el-dropdown-item>评论</el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
 				</template>
 			</el-table-column>
     </el-table>
@@ -109,14 +127,19 @@ export default {
       tmeEnd: '', // 注册结束时间
     }
   },
+  props: {
+    items: {
+      type: Object
+    }
+  },
   methods: {
     // 获取店铺列表数据
     getList: function(){
       let that = this;
-      let ifoType = this.item.ifoType
+      let ifoType = this.items.ifoType;
       let param = {
         "ifo_type": ifoType ? ifoType : "-1",
-        "dmy_sqn": ifoType ? this.item.shpSqn : "",
+        "dmy_sqn": ifoType ? this.items.dmySqn : "",
         "shp_code": this.shpCode,
         "shp_name": this.shpName,
         "shp_location": this.shpLocation,
@@ -177,6 +200,43 @@ export default {
       this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
       this.$router.push(auditTab.route)
     },
+    // 跳转订单列表
+    showOrder: function(index, row) {
+      let orderTab = {
+        route: '/orderList',
+        name: row.shp_code + '订单',
+        ifoType: '0',
+        dmySqn : row.shp_sqn
+      };
+      this.$store.dispatch('tabs/addTabs', orderTab);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      this.$router.push(orderTab.route)
+    },
+    // 跳转资金列表
+    showAsset: function(index, row) {
+      let assetTab = {
+        route: '/assetList',
+        name: row.shp_code + '资金',
+        ifoType: '0',
+        dmySqn: row.shp_sqn
+      };
+      this.$store.dispatch('tabs/addTabs', assetTab);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      this.$router.push(assetTab.route)
+    },
+    // 跳转邀请店铺列表
+    // showInvite: function(index, row) {
+    //   let inviteTab = {
+    //     route: '/shopList',
+    //     name: row.shp_code + '的邀请店铺',
+    //     ifoType: '0',
+    //     dmySqn: row.shp_sqn,
+
+    //   };
+    //   this.$store.dispatch('tabs/addTabs', inviteTab);
+    //   this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+    //   this.$router.push(inviteTab.route)
+    // },
 
     // 切换当前页
     handleCurrentChange(val) {

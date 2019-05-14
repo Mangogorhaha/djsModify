@@ -2,7 +2,7 @@
   <section>
     <el-tabs v-model="tabValue" type="card" @tab-click='getList'>
       <el-tab-pane label = "基本资料" name="2">
-        <li>店铺编号：{{item.name}}</li>
+        <li>店铺编号：{{items.name}}</li>
         <li>店铺名称：{{dataList.shp_name}}</li>
         <!-- <li>手机号码：{{dataList.shp_phone}}</li> -->
         <li>店铺注册时间：{{dataList.tme_log}}</li>
@@ -24,7 +24,7 @@
         </el-col>
         
       </el-tab-pane>
-      <!-- 执照信息 —— 有权限管理 -->
+      <!-- 执照信息 TODO: 有权限管理 -->
       <el-tab-pane label="执照信息" name="1">
         <el-row>
           <el-col :span="8" class="license">
@@ -72,7 +72,7 @@ export default {
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -82,9 +82,9 @@ export default {
   methods: {
     getList: function(){
       let that = this;
-      if (!this.item.shpSqn) return false;
+      if (!this.items.shpSqn) return false;
       let param = {
-        "shp_sqn": this.item.shpSqn,
+        "shp_sqn": this.items.shpSqn,
         "ifo_type": this.tabValue
       }
       ShopDetail(param).then(res => {
@@ -144,21 +144,17 @@ li {
   }
 }
 .license{
-  height: 100px; 
-  width: 80px; 
-  background: pink;
+  width: 100px; 
   margin: 10px 10px 0 0;
   img {
-    width: 80px;
+    width: 100px;
   }
 }
 .idImg .el-col {
-  height: 80px; 
-  width: 140px; 
-  background: pink;
+  width: 200px; 
   margin-right: 10px;
   img{
-    width: 140px;
+    width: 200px;
   }
 }
 

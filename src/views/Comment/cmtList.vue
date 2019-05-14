@@ -82,13 +82,19 @@ export default {
       tmeEnd: '', // 结束时间
     }
   },
+  props: {
+    items: {
+      type: Object
+    }
+  },
   methods: {
     // 获取评价列表数据
     getList: function(){
       let that = this;
+      let ifoType = this.items.ifoType;
       let param = {
-        "ifo_type": "-1",
-        "dmy_sqn": "0",
+        "ifo_type": ifoType ? ifoType : "-1",
+        "dmy_sqn": ifoType ? this.items.dmySqn : "",
         "shp_code": this.shpCode,
         "shp_name": this.shpName,
         "usr_mobile": this.usrMobile,
@@ -141,7 +147,7 @@ export default {
     cmtAudit: function(index, row) {
       let auditTab = {
         route: '/cmtAudit',
-        name: '处理举报'+row.shp_code,
+        name: row.shp_code + '举报处理',
         shpSqn : row.shp_sqn
       }
       this.$store.dispatch('tabs/addTabs', auditTab);

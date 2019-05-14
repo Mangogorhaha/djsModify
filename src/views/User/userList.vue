@@ -86,13 +86,19 @@ export default {
       tmeEnd: '', // 注册结束时间
     }
   },
+  props: {
+    items: {
+      type: Object
+    }
+  },
   methods: {
     // 获取用户列表数据
     getList: function(){
       let that = this;
+      let ifoType = this.items.ifoType;
       let param = {
-        "ifo_type": "1",
-        "dmy_sqn": "1",
+        "ifo_type": ifoType ? ifoType : "-1",
+        "dmy_sqn": ifoType ? this.items.dmySqn : "",
         "usr_code": this.usrCode,
         "usr_mobile": this.usrMobile,
         "tme_begin": this.tmeBegin ? this.tmeBegin : "",
@@ -156,16 +162,6 @@ export default {
   mounted() {
     this.getList();
   },
-  created() {
-  
-  },
-  watch: {
-    $route (to, from){
-    }
-  },
-  computed: {
-    
-  }
 }
 </script>
 

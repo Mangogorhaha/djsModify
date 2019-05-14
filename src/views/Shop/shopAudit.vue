@@ -129,7 +129,7 @@ export default {
     };
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -138,7 +138,7 @@ export default {
     getList: function() {
       let that = this;
       let param = {
-        "shp_sqn": this.item.shpSqn,
+        "shp_sqn": this.items.shpSqn,
         "ifo_type": "0"
       };
       ShopDetail(param).then(res => {
@@ -147,7 +147,8 @@ export default {
         this.idImg = [
           { imgUrl: res.data.base.lsn_url },
           { imgUrl: res.data.base.url_front },
-          { imgUrl: res.data.base.url_back }
+          { imgUrl: res.data.base.url_back },
+          { imgUrl: res.data.base.fdd_url }
         ];
         this.lsn_code = res.data.base.lsn_code;
         this.lsn_entity = res.data.base.lsn_entity;

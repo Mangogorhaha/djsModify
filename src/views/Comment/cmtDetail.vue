@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { UserDetail } from '../../api/api'
+import { CommentDetail } from '../../api/api'
 
 export default {
   data() {
@@ -25,7 +25,7 @@ export default {
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -33,9 +33,9 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "usr_sqn": this.item.usrSqn
+        "cmt_sqn": this.items.cmtSqn
       }
-      UserDetail(param).then(res => {
+      CommentDetail(param).then(res => {
         if(res.data.result == 0){
           that.dataList = res.data.base;
         }else {
@@ -50,7 +50,7 @@ export default {
     },
   },
   created() {
-    // this.getList();
+    this.getList();
   }
 }
 </script>

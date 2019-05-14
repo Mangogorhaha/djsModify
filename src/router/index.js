@@ -13,7 +13,7 @@ import cmtDetail from '@/views/Comment/cmtDetail.vue'
 // 资产
 import assetIndex from '@/views/Asset/assetIndex.vue'
 import assetList from '@/views/Asset/assetList.vue'
-import assetWithdraw from '@/views/Asset/assetWithdraw.vue'
+import assetWithdrawList from '@/views/Asset/assetWithdrawList.vue'
 // 活动
 import activeIndex from '@/views/Active/activeIndex.vue'
 import activeList from '@/views/Active/activeList.vue'
@@ -66,7 +66,7 @@ let routes = [
     children: [
       { path:'/assetIndex',component:assetIndex,name:'资产首页',meta:{urlIndex:301} },
       { path:'/assetList',component:assetList,name:'资产列表',meta:{urlIndex:302} },
-      { path:'/assetWithdraw',component:assetWithdraw,name:'银行卡提现',meta:{urlIndex:303},hidden:true }
+      { path:'/assetWithdrawList',component:assetWithdrawList,name:'提现列表',meta:{urlIndex:303} }
     ]
   },
   {

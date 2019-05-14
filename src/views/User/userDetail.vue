@@ -21,7 +21,7 @@ export default {
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -29,7 +29,7 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "usr_sqn": this.item.usrSqn
+        "usr_sqn": this.items.usrSqn
       }
       UserDetail(param).then(res => {
         if(res.data.result == 0){

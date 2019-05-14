@@ -36,7 +36,7 @@
 							<el-tab-pane :label="item.name" :name="index + ''" v-for="(item, index) in tabs" :key="index" closable>
 								<transition name="fade" mode="out-in">
 									<keep-alive>
-										<router-view :item="item"></router-view>
+										<router-view :items="item"></router-view>
 									</keep-alive>
 								</transition>
 							</el-tab-pane>
@@ -77,9 +77,9 @@ import { Logout } from '../api/api';
 					// let cnckey = this.$store.state.user.userInfo.cnckey;
 					Logout().then(res => {
 						console.log(res.data.message)
-						localStorage.removeItem('userInfo'); //清除本地保存cnckey
-						_this.$router.push('/login');
-					})
+					});
+					localStorage.removeItem('userInfo'); //清除本地保存cnckey
+					_this.$router.push('/login');
 				}).catch(() => {
 
 				});

@@ -35,9 +35,9 @@
       <el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
 			</el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
-			</el-form-item>
+			</el-form-item> -->
     </el-form>
 
     <!-- 资产数据 -->
@@ -65,9 +65,9 @@
       <el-table-column key="10" prop="rsn_comment" min-width="160" label="说明"></el-table-column>
 
       <el-table-column key="11" label="操作" min-width="80">
-				<!-- <template slot-scope="scope">
-					<el-button size="small" @click="withDraw(scope.$index, scope.row)" v-if="scope.row.spl_type==2 && scope.row.pay_type==1">处理</el-button>
-				</template> -->
+				<template slot-scope="scope">
+					<el-button size="small" @click="handleWithdraw(scope.$index, scope.row)" v-if="scope.row.spl_type==2 && scope.row.pay_type==1">处理</el-button>
+				</template>
 			</el-table-column>
     </el-table>
 
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { AssetList } from '../../api/api';
+import { AssetList, AssetWithdraw } from '../../api/api';
 
 export default {
   data() {
@@ -120,19 +120,13 @@ export default {
       tmeEnd: '', // 注册结束时间
     }
   },
-  props: {
-    items: {
-      type: Object
-    }
-  },
   methods: {
     // 获取资产列表数据
     getList: function(){
       let that = this;
-      let ifoType = this.items.ifoType;
       let param = {
-        "ifo_type": ifoType ? ifoType : "-1",
-        "dmy_sqn": ifoType ? this.items.dmySqn : "",
+        "ifo_type": "-2",
+        // "dmy_sqn": "",
         "dmy_code": this.dmyCode,
         "usr_mobile": this.usrMobile,
         "odr_internal": this.odrInternal,
@@ -161,20 +155,23 @@ export default {
       });    
     },
 
-    // 新建查询
-    newSearch: function() {
-      let newTab = {
-        name: '资产列表'+(this.$store.state.tabs.tabs.length),
-        route: '/assetList',
-      }
-      this.$store.dispatch('tabs/addTabs', newTab)
-      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
-      this.$router.push(newTab.route)
+    // 处理提现
+    handleWithdraw: function(index, row) {
+      let status = '';
+      this.$confirm('完成提现？', '提示').then(() => {
+        status = '1';
+      }).catch(() => {
+        status = '0';
+      });
+      let param = {
+        "pay_sqn": row.pay_sqn,
+        "flg_result": status
+      };
+      AssetWithdraw(param).then(res => {
+        this.$message(res.data.message);
+      }).then(this.getList());
     },
-    // 处理提现界面
-    withDraw: function(index, row) {
-      
-    },
+    
 
     // 切换当前页
     handleCurrentChange(val) {

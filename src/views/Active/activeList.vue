@@ -88,13 +88,19 @@ export default {
       tmeEnd: '', // 注册结束时间
     }
   },
+  props: {
+    items: {
+      type: Object
+    }
+  },
   methods: {
     // 获取活动列表数据
     getList: function(){
       let that = this;
+      let ifoType = this.items.ifoType
       let param = {
-        "ifo_type": "-1",
-        "dmy_sqn": "1",
+        "ifo_type": ifoType ? ifoType : "-1",
+        "dmy_sqn": ifoType ? this.items.dmySqn : "",
         "shp_code": this.shpCode,
         "shp_name": this.shpName,
         "amt_face": this.amtFace,
@@ -160,16 +166,6 @@ export default {
   mounted() {
     this.getList();
   },
-  created() {
-  
-  },
-  watch: {
-    $route (to, from){
-    }
-  },
-  computed: {
-    
-  }
 }
 </script>
 

@@ -24,7 +24,7 @@ export default {
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -32,7 +32,7 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "evt_sqn": this.item.usrSqn
+        "evt_sqn": this.items.evtSqn
       }
       ActiveDetail(param).then(res => {
         if(res.data.result == 0){

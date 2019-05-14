@@ -62,7 +62,7 @@ export default {
 
     //FIXME: 多人测试时用别人的cnckey，防止生成多个，失效
     // let userInfo = {
-    //   'cnckey': '5F45B39',
+    //   'cnckey': '321C1E9',
     //   'userName': '唐某某'
     // }
     // localStorage.setItem("userInfo", JSON.stringify(userInfo));
