@@ -29,7 +29,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'scss_vars': '@/styles/vars.scss',
-      'excelExport': path.resolve(__dirname, '../src/excelExport'),
+      // 'excelExport': path.resolve(__dirname, '../src/excelExport'),
     }
   },
   module: {

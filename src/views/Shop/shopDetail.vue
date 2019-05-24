@@ -2,7 +2,7 @@
   <section>
     <el-tabs v-model="tabValue" type="card" @tab-click='getList'>
       <el-tab-pane label = "基本资料" name="2">
-        <li>店铺编号：{{item.name}}</li>
+        <li>店铺编号：{{items.name}}</li>
         <li>店铺名称：{{dataList.shp_name}}</li>
         <!-- <li>手机号码：{{dataList.shp_phone}}</li> -->
         <li>店铺注册时间：{{dataList.tme_log}}</li>
@@ -18,32 +18,45 @@
         <quill-editor v-model="shpStory" ref="myQuillEditor" style="height: 300px;margin-bottom: 50px;" :options="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @change="onEditorChange($event)"></quill-editor>
         <li>门店照片：</li>
         <el-col :span="24" class="img_item">
-          <li class="shopImg" v-for="(item, index) in 15" :key="index">
-            <img :src="item.url_image">
+          <li class="shopImg" v-for="(item, index) in faceImg" :key="index">
+            <img :src="item">
+          </li>
+        </el-col>
+        <li>店内照片：</li>
+        <el-col :span="24" class="img_item">
+          <li class="shopImg" v-for="(item, index) in innerImg" :key="index">
+            <img :src="item">
+          </li>
+        </el-col>
+        <li>菜单照片：</li>
+        <el-col :span="24" class="img_item">
+          <li class="shopImg" v-for="(item, index) in menuImg" :key="index">
+            <img :src="item">
           </li>
         </el-col>
         
       </el-tab-pane>
-      <!-- 执照信息 —— 有权限管理 -->
+      <!-- 执照信息 TODO: 有权限管理 -->
       <el-tab-pane label="执照信息" name="1">
         <el-row>
-          <el-col :span="8" class="license">
+          <!-- <el-col :span="8" class="license">
             <img :src="dataList.lsn_url">
-          </el-col>
+          </el-col> -->
           <el-col :span="16">
             <li>统一社会信用代码：{{dataList.lsn_code}}</li>
             <li>营业主体：{{dataList.lsn_entity}}</li>
             <li>成立日期：{{dataList.lsn_time}}</li>
             <li>执照法人：{{dataList.lsn_lname}}</li>
-            <!-- <li>执照网络地址：{{dataList.lsn_url}}</li> -->
             <li>身份证号码：{{dataList.idc_number}}</li>
             <li>姓名：{{dataList.idc_name}}</li>
             <li>有效期：{{dataList.tme_exprtion}}</li>
             <li>手机号码：{{dataList.mobile}}</li>
             <li>提交时间：{{dataList.tme_log}}</li>
             <el-row class="idImg">
-              <el-col :span="12"><img :src="dataList.url_front"></el-col>
-              <el-col :span="12"><img :src="dataList.url_back"></el-col>
+              <el-col :span="6"><img :src="dataList.lsn_url"></el-col>
+              <el-col :span="6"><img :src="dataList.fdd_url"></el-col>
+              <el-col :span="6"><img :src="dataList.url_front"></el-col>
+              <el-col :span="6"><img :src="dataList.url_back"></el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -65,14 +78,18 @@ export default {
   data() {
     return {
       tabValue: '2',
+      shpSqn: '',
       dataList: [],
-      imgData: [],
+      faceImg: [], // 门店照片
+      innerImg: [], // 店内照片
+      menuImg: [], // 菜单照片
       shpStory: '',
       editorOption: {},
+      curLength: 0,
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -82,9 +99,11 @@ export default {
   methods: {
     getList: function(){
       let that = this;
+      // console.log(this.shpSqn);
+      
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "shp_sqn": this.item.shpSqn,
+        "shp_sqn": this.shpSqn,
+        // "shp_sqn": this.$route.query.shpSqn,
         "ifo_type": this.tabValue
       }
       ShopDetail(param).then(res => {
@@ -96,6 +115,7 @@ export default {
             that.menuImg = res.data.menu; 
             that.shpStory = res.data.base.shp_story;
           }
+          return res.data.base;
         }else {
           // this.$message({
           //   message: res.data.message,
@@ -114,8 +134,24 @@ export default {
     }
   },
   created() {
+    this.shpSqn = this.$route.query.shpSqn;
     this.getList();
   },
+  computed: {
+    length() {
+      this.shpSqn = this.$route.query.shpSqn;
+      return this.$store.state.tabs.tabs.length;
+    }
+  },
+  watch: {
+    length() {
+      // console.log('tabs长度改变');
+      if(this.curLength > this.length) {
+        this.getList();
+      }
+      this.curLength = this.length
+    }
+  }
 }
 </script>
 
@@ -124,41 +160,33 @@ li {
 	padding: 0;
 	margin: 0;
 	list-style: none;
-  height: 30px;
   line-height: 30px;
 }
 .img_item {
   overflow-x: auto;
-  height: 150px;
   display: flex;
   flex-wrap: nowrap;
 }
 .shopImg{
   margin-right: 20px;
   width: 160px;
-  height: 110px;
-  background: lightblue;
   margin-bottom: 10px;
   img {
     width: 160px;
   }
 }
 .license{
-  height: 100px; 
-  width: 80px; 
-  background: pink;
+  width: 100px; 
   margin: 10px 10px 0 0;
   img {
-    width: 80px;
+    width: 100px;
   }
 }
 .idImg .el-col {
-  height: 80px; 
-  width: 140px; 
-  background: pink;
+  width: 200px; 
   margin-right: 10px;
   img{
-    width: 140px;
+    width: 200px;
   }
 }
 

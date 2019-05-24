@@ -30,9 +30,9 @@ export default {
       logining: false,
       isSendCode: false,
       ruleForm: {
-        account: 'admin',
-        psd: '888888',
-        code: '3F6C29',
+        account: '',
+        psd: '',
+        code: '',
       },
       rules: {
         account: [{ required: true, message: '请输入账号', trigger: 'blur' },],

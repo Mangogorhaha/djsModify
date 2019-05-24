@@ -4,45 +4,55 @@
     <!-- 搜索框 -->
 		<el-form :inline="true" class="searchForm">
       <el-form-item label="店铺编号">
-        <el-input v-model="shpCode" placeholder="店铺编号"></el-input>
+        <el-input v-model="shpCode" placeholder="店铺编号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="店铺名称">
-        <el-input v-model="shpName" placeholder="店铺名称"></el-input>
+        <el-input v-model="shpName" placeholder="店铺名称" clearable></el-input>
 			</el-form-item>
       <el-form-item label="用户账号">
-        <el-input v-model="usrMobile" placeholder="用户账号"></el-input>
+        <el-input v-model="usrMobile" placeholder="用户账号" clearable></el-input>
 			</el-form-item>
       <el-form-item label="评价类型">
-        <el-input v-model="cmtType" placeholder="评价类型"></el-input>
+        <el-input v-model="cmtType" placeholder="评价类型" clearable></el-input>
 			</el-form-item>
       <el-form-item label="举报状态">
-        <el-input v-model="rptStatus" placeholder="举报状态"></el-input>
+        <el-input v-model="rptStatus" placeholder="举报状态" clearable></el-input>
 			</el-form-item>
+		</el-form>
+    <el-form :inline="true">
       <el-form-item label="评价时间">
         <el-date-picker v-model="tmeBegin" type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> 至 <el-date-picker v-model="tmeEnd" type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 			</el-form-item>
-			<el-form-item>
+      <el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
 			</el-form-item>
       <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
 			</el-form-item>
-		</el-form>
+    </el-form>
 
-    <!-- 店铺数据 -->
-    <el-table :data="cmtList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border v-cloak>
+    <!-- 评价数据 -->
+    <el-table :data="cmtList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
       <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号"></el-table-column>
-      <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称"></el-table-column>
+      <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="3" prop="usr_mobile" min-width="130" label="用户账号"></el-table-column>
-      <el-table-column key="4" prop="cmt_type" min-width="80" label="类型"></el-table-column>
-      <el-table-column key="5" prop="rpt_status" min-width="80" label="举报状态"></el-table-column>
-      <el-table-column key="6" prop="cmt_text" min-width="250" label="评价内容"></el-table-column>
-      <el-table-column key="7" prop="cmt_reply" min-width="250" label="回复内容"></el-table-column>
+      <el-table-column key="4" min-width="80" label="类型">
+        <template slot-scope="scope">
+          <span>{{scope.row.cmt_type==0?'一般':scope.row.cmt_type==1?'好评':'差评'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column key="5" min-width="80" label="举报状态">
+        <template slot-scope="scope">
+          <span>{{scope.row.cmt_type==0?'可以举报':scope.row.cmt_type==1?'等待处理':'无效举报'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column key="6" prop="cmt_text" min-width="250" label="评价内容" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column key="7" prop="cmt_reply" min-width="250" label="回复内容" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="8" prop="tme_register" min-width="160" label="提交时间"></el-table-column>
 
       <el-table-column key="9" label="操作" min-width="110">
 				<template slot-scope="scope">
-          <el-button size="small" @click="shpAudit(scope.$index, scope.row)" v-if="scope.row.rpt_status==1">处理</el-button>
+          <el-button size="small" @click="cmtAudit(scope.$index, scope.row)" v-if="scope.row.rpt_status==1">处理</el-button>
 					<el-button size="small" @click="showDetail(scope.$index, scope.row)" v-else>查看</el-button>
 				</template>
 			</el-table-column>
@@ -59,17 +69,18 @@
 
 <script>
 import { CommentList, CommentDetail } from '../../api/api';
+import util from '../../common/js/util.js'
 
 export default {
   data() {
     return {
       total: 0,
       page: 1,
-      item: 3, //每页显示数量
-      itemList: [3,10,20,50],
+      item: 10, //每页显示数量
+      itemList: [10,20,50],
       listLoading: false,
       sels: [],//列表选中列
-      cmtList: [], //店铺列表
+      cmtList: [], //评价列表
 
       shpCode: '', // 店铺编号
       shpName: '', // 店铺名称
@@ -80,14 +91,19 @@ export default {
       tmeEnd: '', // 结束时间
     }
   },
+  props: {
+    items: {
+      type: Object
+    }
+  },
   methods: {
     // 获取评价列表数据
     getList: function(){
       let that = this;
+      let ifoType = this.items.ifoType;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "ifo_type": "0",
-        "dmy_sqn": "0",
+        "ifo_type": ifoType ? ifoType : "-1",
+        "dmy_sqn": ifoType ? this.items.dmySqn : "",
         "shp_code": this.shpCode,
         "shp_name": this.shpName,
         "usr_mobile": this.usrMobile,
@@ -118,7 +134,7 @@ export default {
     // 新建查询
     newSearch: function() {
       let newTab = {
-        name: '评论列表'+(this.$store.state.tabs.tabs.length),
+        name: '评论列表' + util.countList('评论列表'),
         route: '/cmtList',
       }
       this.$store.dispatch('tabs/addTabs', newTab)
@@ -128,23 +144,21 @@ export default {
     // 查看详情
     showDetail: function(index,row) {
       let detailTab = {
-        route: '/cmtDetail',
+        route: '/cmtDetail?cmtSqn=' + row.cmt_sqn,
         name: row.shp_code + '店铺评价',
         cmtSqn : row.cmt_sqn
       }
-      this.$store.dispatch('tabs/addTabs', detailTab);
-      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      util.creatTab(detailTab);
       this.$router.push(detailTab.route)
     },
     // 处理举报
     cmtAudit: function(index, row) {
       let auditTab = {
-        route: '/cmtAudit',
-        name: '处理举报'+row.shp_code,
-        shpSqn : row.shp_sqn
+        route: '/cmtAudit?cmtSqn=' + row.cmt_sqn,
+        name: row.shp_code + '举报处理',
+        cmtSqn : row.cmt_sqn
       }
-      this.$store.dispatch('tabs/addTabs', auditTab);
-      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      util.creatTab(auditTab);
       this.$router.push(auditTab.route)
     },
 
@@ -163,7 +177,7 @@ export default {
     },
   },
   mounted() {
-    // this.getList();
+    this.getList();
   }
 }
 </script>

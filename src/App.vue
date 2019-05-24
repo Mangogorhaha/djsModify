@@ -70,6 +70,55 @@ body {
 
 .el-table {
 	margin-top: 20px;
+	.blue {
+		color: #2598FB;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+}
+// 首页e_chart样式
+.chart_item {
+	margin-top: 50px;
+}
+// 首页顶部表格
+.topTable {
+	margin: 20px 0;
+	border: 1px solid #F2F2F2;
+  tr{
+    height: 25px;
+    line-height: 25px;
+    td{
+      width: 120px;
+    }
+    td:nth-child(odd) {
+      background: lightblue;
+      text-align: right;
+    }
+    td:nth-child(even) {
+      box-sizing: border-box;
+      padding-left: 10px;
+    }
+  }
+}
+#topTable {
+	margin: 20px 0;
+  border-right: 1px solid #F2F2F2;
+  border-bottom: 1px solid #F2F2F2;
+  tr {
+    height: 25px;
+    line-height: 25px;
+    td {
+      text-align: center;
+      border-left:1px solid #F2F2F2;
+      border-top:1px solid #F2F2F2;
+    }
+  }
+  thead tr {
+    background: lightblue;
+    th {
+      width: 150px;
+    }
+  }
 }
 
 // 搜索框
@@ -84,7 +133,7 @@ body {
   width: 55% !important;
 	left: 45% !important;
 	.viewer-canvas img {
-		margin-left: auto !important;
+		margin-left: 200px !important;
 	}
 }
 

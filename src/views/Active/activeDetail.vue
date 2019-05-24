@@ -6,7 +6,7 @@
     <li>面值：{{dataList.amt_face}}</li>
     <li>售价：{{dataList.amt_price}}</li>
     <li>数量：{{dataList.cnt_total}}</li>
-    <li>状态：{{dataList.evt_status}}</li>
+    <li>状态：{{dataList.evt_status==1?'正常':'结束'}}</li>
     <li>待消费：{{dataList.cnt_ready}}</li>
     <li>已消费：{{dataList.cnt_consumed}}</li>
     <li>发布时间：{{dataList.tme_log}}</li>
@@ -21,10 +21,13 @@ export default {
   data() {
     return {
       dataList: [],
+
+      curLength: 0,
+      evtSqn: ''
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -32,12 +35,12 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "evt_sqn": this.item.usrSqn
+        "evt_sqn": this.evtSqn
+        // "evt_sqn": this.items.evtSqn
       }
       ActiveDetail(param).then(res => {
         if(res.data.result == 0){
-          that.dataList = res.data.base;
+          that.dataList = res.data;
         }else {
           // this.$message({
           //   message: res.data.message,
@@ -50,7 +53,23 @@ export default {
     },
   },
   created() {
+    this.evtSqn = this.$route.query.evtSqn;
     this.getList();
+  },
+  computed: {
+    length() {
+      this.evtSqn = this.$route.query.evtSqn;
+      return this.$store.state.tabs.tabs.length;
+    }
+  },
+  watch: {
+    length() {
+      // console.log('tabs长度改变');
+      if(this.curLength > this.length) {
+        this.getList();
+      }
+      this.curLength = this.length
+    }
   }
 }
 </script>

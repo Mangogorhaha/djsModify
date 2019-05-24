@@ -3,7 +3,9 @@
     <li>店铺编号：{{dataList.shp_code}}</li>
     <li>店铺名称：{{dataList.shp_name}}</li>
     <li>用户账号：{{dataList.usr_mobile}}</li>
-    <li>差评原因：{{dataList.reason}}</li>
+    <li>评论类型：{{dataList.cmt_type==0?'一般':dataList.cmt_type==1?'好评':'差评'}}</li>
+    <li v-if="dataList.cmt_type==2">举报状态：{{dataList.rpt_status==0?'可以举报':dataList.rpt_status==1?'等待处理':'无效举报'}}</li>
+    <li v-if="dataList.cmt_type==2">差评原因：{{dataList.reason==0?'一般':dataList.reason==1?'好评':'差评'}}</li>
     <li>评论内容：{{dataList.cmt_text}}</li>
     <li>评论图片：</li>
     <div class="img_item">
@@ -16,16 +18,19 @@
 </template>
 
 <script>
-import { UserDetail } from '../../api/api'
+import { CommentDetail } from '../../api/api'
 
 export default {
   data() {
     return {
       dataList: [],
+      
+      curLength: 0,
+      cmtSqn: ''
     }
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -33,12 +38,12 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "usr_sqn": this.item.usrSqn
+        "cmt_sqn": this.cmtSqn
+        // "cmt_sqn": this.items.cmtSqn
       }
-      UserDetail(param).then(res => {
+      CommentDetail(param).then(res => {
         if(res.data.result == 0){
-          that.dataList = res.data.base;
+          that.dataList = res.data;
         }else {
           // this.$message({
           //   message: res.data.message,
@@ -51,7 +56,23 @@ export default {
     },
   },
   created() {
-    // this.getList();
+    this.cmtSqn = this.$route.query.cmtSqn;
+    this.getList();
+  },
+  computed: {
+    length() {
+      this.cmtSqn = this.$route.query.cmtSqn;
+      return this.$store.state.tabs.tabs.length;
+    }
+  },
+  watch: {
+    length() {
+      // console.log('tabs长度改变');
+      if(this.curLength > this.length) {
+        this.getList();
+      }
+      this.curLength = this.length
+    }
   }
 }
 </script>
@@ -66,7 +87,7 @@ li {
 }
 .img_item {
   overflow-x: auto;
-  height: 150px;
+  // height: 150px;
   display: flex;
   flex-wrap: nowrap;
   img {

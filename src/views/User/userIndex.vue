@@ -2,41 +2,61 @@
   <section>
     <table class="topTable">
       <tr>
-        <td>本周新增用户量：</td><td>0</td>
-        <td>累计用户量：</td><td>1</td>
-        <td>有充值记录的用户量：</td><td>2</td>
-        <td>待消费总金额：</td><td>3</td>
+        <td>用户总数：</td><td>{{dataList.cnt_usr_total}}</td>
+        <td>被邀人数：</td><td>{{dataList.cnt_usr_invttion}}</td>
+        <td>消费人数：</td><td>{{dataList.cnt_usr_consume}}</td>
+        <td>分享次数：</td><td>{{dataList.cnt_share}}</td>
+        <td>评价次数：</td><td>{{dataList.cnt_comment}}</td>
       </tr>
       <tr>
-        <td>本月新增用户量：</td><td>4</td>
-        <td>被邀请注册的用户量：</td><td>5</td>
-        <td>有消费记录的用户量：</td><td>6</td>
-        <td>已消费总金额：</td><td>7</td>
+        <td>收藏数量：</td><td>{{dataList.cnt_star}}</td>
+        <td>提醒数量：</td><td>{{dataList.cnt_remind}}</td>
+        <td>待消费额：</td><td>{{dataList.amt_ready}}</td>
+        <td>已消费额：</td><td>{{dataList.amt_consumed}}</td>
+        <td>省点余额：</td><td>{{dataList.tkn_balance}}</td>
       </tr>
     </table>
+
+    <el-row class="chart_item">
+      <el-col :span="12"><ve-line :data="chartData"></ve-line></el-col>
+      <el-col :span="12"><ve-pie :data="chartData"></ve-pie></el-col>
+    </el-row>
   </section>
 </template>
 
 <script>
+import { UserIndex } from '../../api/api'
+
 export default {
-  
+  data: function () {
+    return {
+      dataList: [],
+      chartData: {
+        columns: [],
+        rows: []
+      }
+    }
+  },
+  methods: {
+    getData: function() {
+      let param = {
+        "ifo_type": "-1",
+        "dmy_sqn": "0"
+      };
+      UserIndex(param).then(res => {
+        if(res.data.result == 0) {
+          this.dataList = res.data;
+          this.chartData.columns = res.data.columns;
+          this.chartData.rows = res.data.rows;
+        }
+      })
+    }
+  },
+  mounted() {
+    this.getData();
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.topTable {
-	margin: 20px 0;
-	border: 1px solid #F2F2F2;
-  tr{
-    height: 25px;
-    line-height: 25px;
-    td{
-      width: 150px;
-    }
-    td:nth-child(odd) {
-      background: lightblue;
-      text-align: right;
-    }
-  }
-}
 </style>

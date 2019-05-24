@@ -2,41 +2,73 @@
   <section>
     <table class="topTable">
       <tr>
-        <td>深圳市店铺数：</td><td>0</td>
-        <td>营业收入总额：</td><td>1</td>
-        <td>待购买优惠券总量：</td><td>2</td>
-        <td>邀请好友总数：</td><td>3</td>
+        <td>店铺总数：</td><td>{{dataList.cnt_shp_total}}</td>
+        <td>被邀店数：</td><td>{{dataList.cnt_shp_invttion}}</td>
+        <td>开通店数：</td><td>{{dataList.cnt_shp_open}}</td>
+        <td>分享次数：</td><td>{{dataList.cnt_share}}</td>
+        <td>评价次数：</td><td>{{dataList.cnt_comment}}</td>
       </tr>
       <tr>
-        <td>非深圳市店铺数：</td><td>4</td>
-        <td>可提现总余额：</td><td>5</td>
-        <td>待消费优惠券总量：</td><td>6</td>
-        <td>邀请店铺总数：</td><td>7</td>
+        <td>用户总数：</td><td>{{dataList.cnt_usr_total}}</td>
+        <td>资金金额：</td><td>{{dataList.amt_balance}}</td>
+        <td>待消费额：</td><td>{{dataList.amt_ready}}</td>
+        <td>已消费额：</td><td>{{dataList.amt_consumed}}</td>
+        <td>省点余额：</td><td>{{dataList.tkn_balance}}</td>
       </tr>
     </table>
+    <el-row class="chart_item">
+      <el-col :span="12"><ve-line :data="chartData" :settings="chartSettings"></ve-line></el-col>
+      <el-col :span="12"><ve-pie :data="chartData"></ve-pie></el-col>
+    </el-row>
   </section>
 </template>
 
 <script>
+import { ShopIndex } from '../../api/api'
+
 export default {
-  
+  data: function () {
+    this.chartSettings = {
+      labelMap: {
+        day_settle: '日期',
+        cnt_total: '评论数量'
+      }
+    }
+    return {
+      dataList: [],
+      chartData: {
+        columns: [],
+        rows: []
+      }
+    }
+  },
+  methods: {
+    getData: function() {
+      let param = {
+        "ifo_type": "-1",
+        "dmy_sqn": "0"
+      };
+      ShopIndex(param).then(res => {
+        if(res.data.result == 0) {
+          this.dataList = res.data;
+          this.chartData.columns = res.data.columns;
+          this.chartData.rows = res.data.rows;
+        }
+      })
+    }
+  },
+  mounted() {
+    this.getData();
+
+    //FIXME: 多人测试时用别人的cnckey，防止生成多个，失效
+    // let userInfo = {
+    //   'cnckey': '3B86424B',
+    //   'userName': '唐某某'
+    // }
+    // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.topTable {
-	margin: 20px 0;
-	border: 1px solid #F2F2F2;
-  tr{
-    height: 25px;
-    line-height: 25px;
-    td{
-      width: 150px;
-    }
-    td:nth-child(odd) {
-      background: lightblue;
-      text-align: right;
-    }
-  }
-}
 </style>

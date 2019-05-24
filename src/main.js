@@ -12,13 +12,19 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
+// import VCharts from 'v-charts'
+import VeLine from 'v-charts/lib/line'
+import VePie from 'v-charts/lib/pie'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+// Vue.use(VCharts)
 Vue.prototype.$axios = axios
+Vue.component(VeLine.name, VeLine)
+Vue.component(VePie.name, VePie)
 
 //Vue.use(Viewer) 默认配置写法
 Vue.use(Viewer, {
@@ -52,6 +58,7 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
+  // components: { App },
+  // template: '<App/>'
+  render: h => h(App)
 })

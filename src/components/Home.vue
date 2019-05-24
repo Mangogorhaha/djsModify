@@ -22,7 +22,7 @@
 					<el-submenu :index="item.path" v-for="(item,index) in $router.options.routes" :key="index" v-if="!item.hidden">
 						<template slot="title"><i :class="item.iconCls" ></i>{{item.name}}</template>
 						<!-- <el-menu-item v-for="(child, subIndex) in item.children" :index="child.path+'?index='+(index-1)" :key="subIndex" v-if="!child.hidden"> -->
-						<el-menu-item v-for="(child, subIndex) in item.children" :index="child.path" :key="subIndex" v-if="!child.hidden">
+						<el-menu-item v-for="(child, subIndex) in item.children" :index="child.path" :key="subIndex" v-if="!child.hidden" @click.native="sideClick(child.path,child.name)">
 							{{child.name}}
 						</el-menu-item>
 					</el-submenu>
@@ -36,7 +36,7 @@
 							<el-tab-pane :label="item.name" :name="index + ''" v-for="(item, index) in tabs" :key="index" closable>
 								<transition name="fade" mode="out-in">
 									<keep-alive>
-										<router-view :item="item"></router-view>
+										<router-view :items="item"></router-view>
 									</keep-alive>
 								</transition>
 							</el-tab-pane>
@@ -51,6 +51,7 @@
 
 <script>
 import { Logout } from '../api/api';
+import util from '../common/js/util.js'
 
 	export default {
 		data() {
@@ -74,12 +75,12 @@ import { Logout } from '../api/api';
 				this.$confirm('确认退出吗?', '提示', {
 					//type: 'warning'
 				}).then(() => {
-					let cnckey = this.$store.state.user.userInfo.cnckey;
-					Logout({"cnckey": cnckey}).then(res => {
+					// let cnckey = this.$store.state.user.userInfo.cnckey;
+					Logout().then(res => {
 						console.log(res.data.message)
-						localStorage.removeItem('userInfo'); //清除本地保存cnckey
-						_this.$router.push('/login');
-					})
+					});
+					localStorage.removeItem('userInfo'); //清除本地保存cnckey
+					_this.$router.push('/login');
 				}).catch(() => {
 
 				});
@@ -96,6 +97,15 @@ import { Logout } from '../api/api';
 				this.week = "星期" + "日一二三四五六".charAt(timeStamp.getDay());
 			},
 
+			sideClick(path, name) {
+				let tabs = this.tabs;
+				let sideTab = {
+					route: path,
+					name: name,
+				};
+				util.creatTab(sideTab);
+				this.$router.push(sideTab.route);
+			},
 			//tab标签点击时，切换相应的路由
 			tabClick(currentTab){
 				let tabs = this.tabs;
@@ -111,26 +121,19 @@ import { Logout } from '../api/api';
 			//移除tab标签
 			tabRemove(targetName){
 				let tabs = this.tabs;
-				if (tabs && tabs.length > 1) {
-					if (this.activeIndex === targetName) { //删除页为当前页
-						for (let index in tabs) {
-							if (index === targetName){
-								// let activeTab = index == 0 ? tabs[parseInt(index)] : tabs[parseInt(index) + 1] || tabs[parseInt(index) - 1];
-								let activeTab = index == tabs.length-1 ? tabs[parseInt(index) - 1] : tabs[parseInt(index)];
-								if (activeTab){
-									this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === activeTab.name)+'')
-									this.$router.push(index == tabs.length-1 ? activeTab.route :  tabs[parseInt(targetName)+1].route)
-								}
-							}
-						}
-					}else {
-						let activeTab = parseInt(this.activeIndex) > parseInt(targetName) ? tabs[parseInt(this.activeIndex) - 1] : tabs[parseInt(this.activeIndex)];
-						if (activeTab){
-							this.$router.push(tabs[parseInt(this.activeIndex)].route)
+				let currentTab = tabs[this.activeIndex];
+				if(tabs && tabs.length > 1) {
+					this.$store.dispatch('tabs/deleteTabs', targetName);
+					if (this.activeIndex === targetName) {	
+						let activeTab = tabs[this.activeIndex] || tabs[this.activeIndex - 1]
+						if(activeTab){
+							this.$router.push(activeTab.route)
 							this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === activeTab.name)+'')
 						}
+					}else {
+						this.$router.push(currentTab.route)
+						this.$store.dispatch('tabs/setActive', tabs.findIndex(item => item.name === currentTab.name)+'')
 					}
-					this.$store.dispatch('tabs/deleteTabs', targetName);
 				}
 			}
 		},
@@ -159,38 +162,6 @@ import { Logout } from '../api/api';
 				this.$router.push('/shopIndex')
 				this.$store.dispatch('tabs/addTabs', { route: this.$route.path, name: this.$route.name })
 				this.$store.dispatch('tabs/setActive', '0')
-			}
-		},
-		watch: {
-			$route (to, from){
-				console.log('route is changing');
-				
-				let flag = false;
-				// 判断是否已打开标签页
-				let tabs = this.tabs;
-				for (let index in tabs){
-					index = parseInt(index)
-					// 从侧边菜单栏打开
-					if (this.$store.state.tabs.isMenu) {
-						if (tabs[index].route === to.path) {
-							this.$store.dispatch('tabs/setActive', index+'');
-							flag = true;
-							this.$store.state.tabs.isMenu = false;
-							break;
-						}
-					}else {
-						if (tabs[index].route === to.path) {
-							this.$store.dispatch('tabs/setActive', this.activeIndex);
-							flag = true;
-							break;
-						}
-					}
-				}
-        if(!flag){
-          this.$store.dispatch('tabs/addTabs', {route: to.path, name: to.name});
-					this.$store.dispatch('tabs/setActive', this.tabs.length-1);
-					this.$router.push(this.tabs[this.tabs.length-1].route)
-        }
 			}
 		},
 		computed: {
@@ -244,8 +215,6 @@ import { Logout } from '../api/api';
 				padding-left:20px;
 				padding-right:20px;
 				border-color: rgba(238,241,146,0.3);
-				// border-right-width: 1px;
-				// border-right-style: solid;
 				img {
 					width: 40px;
 					float: left;
@@ -255,81 +224,26 @@ import { Logout } from '../api/api';
 					color:#fff;
 				}
 			}
-			// .logo-width{
-			// 	width:230px;
-			// }
-			// .logo-collapse-width{
-			// 	width:60px
-			// }
-			.tools{
-				padding: 0px 23px;
-				// width:14px;
-				height: 60px;
-				line-height: 60px;
-				// cursor: pointer;
-			}
 		}
 		.main {
 			display: flex;
-			// background: #324057;
 			position: absolute;
 			top: 60px;
 			bottom: 0px;
 			overflow: hidden;
 			aside {
-				flex:0 0 230px;
-				width: 230px;
-				// position: absolute;
-				// top: 0px;
-				// bottom: 0px;
 				.el-menu{
 					height: 100%;
 				}
-				.collapsed{
-					width:60px;
-					.item{
-						position: relative;
-					}
-					.submenu{
-						position:absolute;
-						top:0px;
-						left:60px;
-						z-index:99999;
-						height:auto;
-						display:none;
-					}
-
+				.el-menu-item{
+					min-width: 100%;
 				}
-			}
-			.menu-collapsed{
-				flex:0 0 60px;
-				width: 60px;
-			}
-			.menu-expanded{
-				flex:0 0 230px;
-				width: 230px;
 			}
 			.content-container {
-				// background: #f1f2f7;
 				flex:1;
-				// position: absolute;
-				// right: 0px;
-				// top: 0px;
-				// bottom: 0px;
-				// left: 230px;
 				overflow-y: scroll;
 				padding: 20px;
-				.breadcrumb-container {
-					//margin-bottom: 15px;
-					.title {
-						width: 200px;
-						float: left;
-						color: #475669;
-					}
-					.breadcrumb-inner {
-						float: right;
-					}
-				}
+				height: 100%;
 				.content-wrapper {
 					background-color: #fff;
 					box-sizing: border-box;

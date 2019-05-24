@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td>身份证号码：</td>
-            <td><input type="number" maxlength="18" v-model="idc_number"/></td>
+            <td><input type="text" v-model="idc_number"/></td>
           </tr>
           <tr>
             <td>姓名：</td>
@@ -125,11 +125,14 @@ export default {
       lsn_lname: '',
       idc_number: '',
       idc_name: '',
-      tme_exprtion: ''
+      tme_exprtion: '',
+      
+      curLength: 0,
+      shpSqn: ''
     };
   },
   props: {
-    item: {
+    items: {
       type: Object
     }
   },
@@ -138,8 +141,8 @@ export default {
     getList: function() {
       let that = this;
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
-        "shp_sqn": this.item.shpSqn,
+        "shp_sqn": this.shpSqn,
+        // "shp_sqn": this.items.shpSqn,
         "ifo_type": "0"
       };
       ShopDetail(param).then(res => {
@@ -148,7 +151,8 @@ export default {
         this.idImg = [
           { imgUrl: res.data.base.lsn_url },
           { imgUrl: res.data.base.url_front },
-          { imgUrl: res.data.base.url_back }
+          { imgUrl: res.data.base.url_back },
+          { imgUrl: res.data.base.fdd_url }
         ];
         this.lsn_code = res.data.base.lsn_code;
         this.lsn_entity = res.data.base.lsn_entity;
@@ -175,7 +179,6 @@ export default {
         return;
       }
       let param = {
-        "cnckey": this.$store.state.user.userInfo.cnckey,
         "shp_sqn": this.dataList.shp_sqn.toString(),
         "flg_code": this.radio1.toString(),
         "flg_entity": this.radio2.toString(),
@@ -208,8 +211,24 @@ export default {
     }
   },
   created() {
+    this.shpSqn = this.$route.query.shpSqn;
     this.getList();
   },
+  computed: {
+    length() {
+      this.shpSqn = this.$route.query.shpSqn;
+      return this.$store.state.tabs.tabs.length;
+    }
+  },
+  watch: {
+    length() {
+      // console.log('tabs长度改变');
+      if(this.curLength > this.length) {
+        this.getList();
+      }
+      this.curLength = this.length
+    }
+  }
 };
 </script>
 

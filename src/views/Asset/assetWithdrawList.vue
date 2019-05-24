@@ -35,9 +35,9 @@
       <el-form-item>
 				<el-button type="primary" @click="getList">查询</el-button>
 			</el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
 				<el-button type="primary" @click="newSearch">新建查询</el-button>
-			</el-form-item>
+			</el-form-item> -->
     </el-form>
 
     <!-- 资产数据 -->
@@ -65,9 +65,9 @@
       <el-table-column key="10" prop="rsn_comment" min-width="160" label="说明"></el-table-column>
 
       <el-table-column key="11" label="操作" min-width="80">
-				<!-- <template slot-scope="scope">
-					<el-button size="small" @click="withDraw(scope.$index, scope.row)" v-if="scope.row.spl_type==2 && scope.row.pay_type==1">处理</el-button>
-				</template> -->
+				<template slot-scope="scope">
+					<el-button size="small" @click="handleWithdraw(scope.$index, scope.row)" v-if="scope.row.pay_status==0">处理</el-button>
+				</template>
 			</el-table-column>
     </el-table>
 
@@ -76,13 +76,22 @@
 			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-size="item" :page-sizes="itemList" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
+
+    <!-- 处理提现界面 -->
+    <el-dialog title="提示" :visible.sync="withdrawform" width="30%">
+      同意提现？
+      <span slot="footer">
+        <el-button @click="process('0')">驳回</el-button>
+        <el-button type="primary" @click="process('1')">同意</el-button>
+      </span>
+    </el-dialog>
+    
     
   </section>
 </template>
 
 <script>
-import { AssetList } from '../../api/api';
-import util from '../../common/js/util.js'
+import { AssetList, AssetWithdraw } from '../../api/api';
 
 export default {
   data() {
@@ -94,6 +103,8 @@ export default {
       listLoading: false,
       sels: [],//列表选中列
       assetList: [], //资产列表
+      withdrawform: false,
+      paySqn: '',
 
       dmyCode: '', // 店铺or用户编号
       usrMobile: '', // 手机号码
@@ -121,19 +132,13 @@ export default {
       tmeEnd: '', // 注册结束时间
     }
   },
-  props: {
-    items: {
-      type: Object
-    }
-  },
   methods: {
     // 获取资产列表数据
     getList: function(){
       let that = this;
-      let ifoType = this.items.ifoType;
       let param = {
-        "ifo_type": ifoType ? ifoType : "-1",
-        "dmy_sqn": ifoType ? this.items.dmySqn : "",
+        "ifo_type": "-2",
+        // "dmy_sqn": "",
         "dmy_code": this.dmyCode,
         "usr_mobile": this.usrMobile,
         "odr_internal": this.odrInternal,
@@ -162,19 +167,22 @@ export default {
       });    
     },
 
-    // 新建查询
-    newSearch: function() {
-      let newTab = {
-        name: '资产列表' + util.countList('资产列表'),
-        route: '/assetList',
-      }
-      this.$store.dispatch('tabs/addTabs', newTab)
-      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
-      this.$router.push(newTab.route)
+    // 处理提现
+    handleWithdraw: function(index, row) {
+      this.withdrawform = true;
+      this.paySqn = row.pay_sqn;
     },
-    // 处理提现界面
-    withDraw: function(index, row) {
-      
+    process(status) {
+      let param = {
+        "pay_sqn": this.paySqn,
+        "flg_result": status
+      };
+      AssetWithdraw(param).then(res => {
+        this.$message(res.data.message);
+      }).then(res => {
+        this.withdrawform = false;
+        this.getList();
+      });
     },
 
     // 切换当前页
