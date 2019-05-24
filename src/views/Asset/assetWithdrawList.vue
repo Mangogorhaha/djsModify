@@ -66,7 +66,11 @@
 
       <el-table-column key="11" label="操作" min-width="80">
 				<template slot-scope="scope">
+<<<<<<< HEAD
 					<el-button size="small" @click="handleWithdraw(scope.$index, scope.row)" v-if="scope.row.pay_status==0">处理</el-button>
+=======
+					<el-button size="small" @click="handleWithdraw(scope.$index, scope.row)" v-if="scope.row.spl_type==2 && scope.row.pay_type==1">处理</el-button>
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 				</template>
 			</el-table-column>
     </el-table>
@@ -76,6 +80,7 @@
 			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="page" :page-size="item" :page-sizes="itemList" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
+<<<<<<< HEAD
 
     <!-- 处理提现界面 -->
     <el-dialog title="提示" :visible.sync="withdrawform" width="30%">
@@ -86,6 +91,8 @@
       </span>
     </el-dialog>
     
+=======
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
     
   </section>
 </template>
@@ -103,8 +110,11 @@ export default {
       listLoading: false,
       sels: [],//列表选中列
       assetList: [], //资产列表
+<<<<<<< HEAD
       withdrawform: false,
       paySqn: '',
+=======
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 
       dmyCode: '', // 店铺or用户编号
       usrMobile: '', // 手机号码
@@ -169,21 +179,38 @@ export default {
 
     // 处理提现
     handleWithdraw: function(index, row) {
+<<<<<<< HEAD
       this.withdrawform = true;
       this.paySqn = row.pay_sqn;
     },
     process(status) {
       let param = {
         "pay_sqn": this.paySqn,
+=======
+      let status = '';
+      this.$confirm('完成提现？', '提示').then(() => {
+        status = '1';
+      }).catch(() => {
+        status = '0';
+      });
+      let param = {
+        "pay_sqn": row.pay_sqn,
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         "flg_result": status
       };
       AssetWithdraw(param).then(res => {
         this.$message(res.data.message);
+<<<<<<< HEAD
       }).then(res => {
         this.withdrawform = false;
         this.getList();
       });
     },
+=======
+      }).then(this.getList());
+    },
+    
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 
     // 切换当前页
     handleCurrentChange(val) {

@@ -99,11 +99,17 @@ export default {
   methods: {
     getList: function(){
       let that = this;
+<<<<<<< HEAD
       // console.log(this.shpSqn);
       
       let param = {
         "shp_sqn": this.shpSqn,
         // "shp_sqn": this.$route.query.shpSqn,
+=======
+      if (!this.items.shpSqn) return false;
+      let param = {
+        "shp_sqn": this.items.shpSqn,
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         "ifo_type": this.tabValue
       }
       ShopDetail(param).then(res => {

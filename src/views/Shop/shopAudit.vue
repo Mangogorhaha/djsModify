@@ -141,8 +141,12 @@ export default {
     getList: function() {
       let that = this;
       let param = {
+<<<<<<< HEAD
         "shp_sqn": this.shpSqn,
         // "shp_sqn": this.items.shpSqn,
+=======
+        "shp_sqn": this.items.shpSqn,
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         "ifo_type": "0"
       };
       ShopDetail(param).then(res => {

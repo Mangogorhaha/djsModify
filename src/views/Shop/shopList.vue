@@ -48,12 +48,20 @@
       <el-table-column key="7" prop="amt_balance" min-width="80" label="资金金额"></el-table-column>
       <el-table-column key="8" min-width="80" label="待消费额">
         <template slot-scope="scope">
+<<<<<<< HEAD
           <span class="blue" @click="showOrderToConsume(scope.$index, scope.row)">{{scope.row.amt_ready}}</span>
+=======
+          <span class="blue" @click="showOrder(scope.$index, scope.row)">{{scope.row.amt_ready}}</span>
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         </template>
       </el-table-column>
       <el-table-column key="9" min-width="80" label="已消费额">
         <template slot-scope="scope">
+<<<<<<< HEAD
           <span class="blue" @click="showOrderConsumed(scope.$index, scope.row)">{{scope.row.amt_consumed}}</span>
+=======
+          <span class="blue" @click="showOrder(scope.$index, scope.row)">{{scope.row.amt_consumed}}</span>
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         </template>
       </el-table-column>
       <el-table-column key="10" min-width="80" label="省点余额">
@@ -63,11 +71,32 @@
       </el-table-column>
       <el-table-column key="11" prop="tme_register" min-width="160" label="注册时间"></el-table-column>
 
+<<<<<<< HEAD
       <el-table-column key="12" label="操作" min-width="110">
 				<template slot-scope="scope">
           <el-button size="small" @click="shpAudit(scope.$index, scope.row)" v-if="scope.row.shp_status=='待审核'">审核</el-button>
 					<!-- <el-button size="small" @click="showDetail(scope.$index, scope.row)" v-else>详情</el-button> -->
 					<el-button size="small" @click="showInvite(scope.$index, scope.row)" v-else>邀请的店铺</el-button>
+=======
+      <el-table-column key="12" label="操作" min-width="160">
+				<template slot-scope="scope">
+          <el-button size="small" @click="shpAudit(scope.$index, scope.row)" v-if="scope.row.shp_status=='待审核'">审核</el-button>
+					<!-- <el-button size="small" @click="showDetail(scope.$index, scope.row)" v-else>详情</el-button> -->
+					<!-- <el-button size="small">消费额</el-button>
+					<el-button size="small">省点余额</el-button> -->
+					<el-button size="small" v-else>邀请的店铺</el-button>
+          <!-- <el-dropdown>
+            <el-button size="small">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>邀请好友列表</el-dropdown-item>
+              <el-dropdown-item>邀请店铺列表</el-dropdown-item>
+              <el-dropdown-item>优惠券列表</el-dropdown-item>
+              <el-dropdown-item>评论</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown> -->
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 				</template>
 			</el-table-column>
     </el-table>
@@ -158,7 +187,11 @@ export default {
     // 新建查询
     newSearch: function() {
       let newTab = {
+<<<<<<< HEAD
         name: '店铺列表' + util.countList('店铺列表'),
+=======
+        name: '店铺列表'+ (this.$store.state.tabs.tabs.length),
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         route: '/shopList',
       }
       this.$store.dispatch('tabs/addTabs', newTab)
@@ -185,6 +218,7 @@ export default {
       util.creatTab(auditTab);
       this.$router.push(auditTab.route)
     },
+<<<<<<< HEAD
     // 跳转待消费订单列表
     showOrderToConsume: function(index, row) {
       let orderTab = {
@@ -206,6 +240,18 @@ export default {
         odrStatus: '1'
       };
       util.creatTab(orderTab);
+=======
+    // 跳转订单列表
+    showOrder: function(index, row) {
+      let orderTab = {
+        route: '/orderList',
+        name: row.shp_code + '订单',
+        ifoType: '0',
+        dmySqn : row.shp_sqn
+      };
+      this.$store.dispatch('tabs/addTabs', orderTab);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       this.$router.push(orderTab.route)
     },
     // 跳转资金列表
@@ -216,6 +262,7 @@ export default {
         ifoType: '0',
         dmySqn: row.shp_sqn
       };
+<<<<<<< HEAD
       util.creatTab(assetTab);
       this.$router.push(assetTab.route)
     },
@@ -230,6 +277,25 @@ export default {
       util.creatTab(inviteTab);
       this.$router.push(inviteTab.route)
     },
+=======
+      this.$store.dispatch('tabs/addTabs', assetTab);
+      this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+      this.$router.push(assetTab.route)
+    },
+    // 跳转邀请店铺列表
+    // showInvite: function(index, row) {
+    //   let inviteTab = {
+    //     route: '/shopList',
+    //     name: row.shp_code + '的邀请店铺',
+    //     ifoType: '0',
+    //     dmySqn: row.shp_sqn,
+
+    //   };
+    //   this.$store.dispatch('tabs/addTabs', inviteTab);
+    //   this.$store.dispatch('tabs/setActive', this.$store.state.tabs.tabs.length-1+'');
+    //   this.$router.push(inviteTab.route)
+    // },
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 
     // 切换当前页
     handleCurrentChange(val) {

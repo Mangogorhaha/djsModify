@@ -1,7 +1,12 @@
 import axios from 'axios'
 
+<<<<<<< HEAD
 axios.defaults.baseURL = 'http://api.5idjs.com'; //正式环境
 // axios.defaults.baseURL = 'http://api_test.5idjs.com' // 测试环境
+=======
+// axios.defaults.baseURL = 'http://api.5idjs.com'; //正式环境
+axios.defaults.baseURL = 'http://api_test.5idjs.com' // 测试环境
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 // axios.defaults.baseURL = 'http://192.168.10.150:7001';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.timeout = 5000;

@@ -30,6 +30,7 @@
 
 <script>
 import { CommentIndex } from '../../api/api'
+<<<<<<< HEAD
 
 export default {
   data: function () {
@@ -38,6 +39,58 @@ export default {
         day_settle: '日期',
         cnt_total: '评论数量'
       }
+=======
+
+export default {
+  data: function () {
+    this.chartSettings = {
+      labelMap: {
+        day_settle: '日期',
+        cnt_total: '评论数量'
+      }
+    }
+    return {
+      dataList: [],
+      chartData: {
+        columns: [],
+        rows: []
+      }
+    }
+  },
+  methods: {
+    getData: function() {
+      let param = {
+        "ifo_type": "-1",
+        "dmy_sqn": "0"
+      };
+      CommentIndex(param).then(res => {
+        if(res.data.result == 0) {
+          this.dataList = res.data;
+          this.chartData.columns = res.data.columns;
+          this.chartData.rows = res.data.rows;
+        }
+      })
+    }
+  },
+  mounted() {
+    this.getData();
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+#topTable {
+	margin: 20px 0;
+  border-right: 1px solid #F2F2F2;
+  border-bottom: 1px solid #F2F2F2;
+  tr {
+    height: 25px;
+    line-height: 25px;
+    td {
+      text-align: center;
+      border-left:1px solid #F2F2F2;
+      border-top:1px solid #F2F2F2;
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
     }
     return {
       dataList: [],

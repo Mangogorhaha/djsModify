@@ -24,11 +24,15 @@
 
     <!-- 用户数据 -->
     <el-table :data="userList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" border tooltip-effect="light">
+<<<<<<< HEAD
       <el-table-column key="1" min-width="80" label="用户编号">
         <template slot-scope="scope">
           <span class="blue" @click="showDetail(scope.$index, scope.row)">{{scope.row.usr_code}}</span>
         </template>
       </el-table-column>
+=======
+      <el-table-column key="1" prop="usr_code" min-width="80" label="用户编号"></el-table-column>
+>>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       <el-table-column key="2" prop="usr_mobile" min-width="130" label="手机号码"></el-table-column>
       <el-table-column key="3" prop="usr_nick" min-width="130" label="昵称" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="4" prop="bkr_code" min-width="80" label="推荐人"></el-table-column>
