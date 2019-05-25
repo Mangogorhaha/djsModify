@@ -142,7 +142,7 @@ export default {
     showDetail: function(index,row) {
       let detailTab = {
         route: '/activeDetail?evtSqn=' + row.evt_sqn,
-        name: row.cpn_prefix + '',
+        name: row.shp_name + row.cpn_prefix + '',
         evtSqn : row.evt_sqn
       }
       util.creatTab(detailTab);

@@ -53,13 +53,8 @@ export default {
       AssetIndex(param).then(res => {
         if(res.data.result == 0) {
           this.dataList = res.data;
-<<<<<<< HEAD
           // this.chartData.columns = res.data.columns;
           // this.chartData.rows = res.data.rows;
-=======
-          this.chartData.columns = res.data.columns;
-          this.chartData.rows = res.data.rows;
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         }
       })
     }

@@ -36,7 +36,6 @@
       <el-table-column key="1" prop="shp_code" min-width="80" label="店铺编号"></el-table-column>
       <el-table-column key="2" prop="shp_name" min-width="130" label="店铺名称" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="3" prop="usr_mobile" min-width="130" label="用户账号"></el-table-column>
-<<<<<<< HEAD
       <el-table-column key="4" min-width="80" label="类型">
         <template slot-scope="scope">
           <span>{{scope.row.cmt_type==0?'一般':scope.row.cmt_type==1?'好评':'差评'}}</span>
@@ -44,13 +43,9 @@
       </el-table-column>
       <el-table-column key="5" min-width="80" label="举报状态">
         <template slot-scope="scope">
-          <span>{{scope.row.cmt_type==0?'可以举报':scope.row.cmt_type==1?'等待处理':'无效举报'}}</span>
+          <span>{{scope.row.rpt_status==0?'可以举报':scope.row.rpt_status==1?'等待处理':'无效举报'}}</span>
         </template>
       </el-table-column>
-=======
-      <el-table-column key="4" prop="cmt_type" min-width="80" label="类型"></el-table-column>
-      <el-table-column key="5" prop="rpt_status" min-width="80" label="举报状态"></el-table-column>
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       <el-table-column key="6" prop="cmt_text" min-width="250" label="评价内容" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="7" prop="cmt_reply" min-width="250" label="回复内容" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column key="8" prop="tme_register" min-width="160" label="提交时间"></el-table-column>
@@ -159,15 +154,9 @@ export default {
     // 处理举报
     cmtAudit: function(index, row) {
       let auditTab = {
-<<<<<<< HEAD
         route: '/cmtAudit?cmtSqn=' + row.cmt_sqn,
         name: row.shp_code + '举报处理',
         cmtSqn : row.cmt_sqn
-=======
-        route: '/cmtAudit',
-        name: row.shp_code + '举报处理',
-        shpSqn : row.shp_sqn
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       }
       util.creatTab(auditTab);
       this.$router.push(auditTab.route)

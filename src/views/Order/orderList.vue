@@ -40,13 +40,13 @@
       <el-table-column key="3" prop="usr_mobile" min-width="130" label="用户账号"></el-table-column>
       <el-table-column key="4" prop="odr_internal" min-width="130" label="订单编号"></el-table-column>
       <el-table-column key="5" prop="cpn_prefix" min-width="130" label="活动编号"></el-table-column>
-      <el-table-column key="6" prop="spl_type" min-width="80" label="支付方式">
+      <el-table-column key="6" min-width="80" label="支付方式">
         <template slot-scope="scope">
-          <span>{{scope.row.odr_status==0?'支付宝':scope.row.odr_status==1?'微信':'银联'}}</span>
+          <span>{{scope.row.spl_type==0?'支付宝':scope.row.spl_type==1?'微信':'银联'}}</span>
         </template>
       </el-table-column>
       <el-table-column key="7" prop="cpn_now" min-width="80" label="优惠券数量"></el-table-column>
-      <el-table-column key="8" prop="odr_status" min-width="80" label="状态">
+      <el-table-column key="8" min-width="80" label="状态">
         <template slot-scope="scope">
           <span>{{scope.row.odr_status==0?'待消费':scope.row.odr_status==1?'已消费':'已退款'}}</span>
         </template>

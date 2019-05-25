@@ -99,7 +99,6 @@ body {
       padding-left: 10px;
     }
   }
-<<<<<<< HEAD
 }
 #topTable {
 	margin: 20px 0;
@@ -120,8 +119,6 @@ body {
       width: 150px;
     }
   }
-=======
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 }
 
 // 搜索框

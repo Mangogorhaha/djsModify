@@ -93,7 +93,7 @@ import util from '../common/js/util.js'
 				let hh =new Date(timeStamp).getHours() < 10? "0" + new Date(timeStamp).getHours(): new Date(timeStamp).getHours();
 				let mm =new Date(timeStamp).getMinutes() < 10? "0" + new Date(timeStamp).getMinutes(): new Date(timeStamp).getMinutes();
 				// let ss =new Date(timeStamp).getSeconds() < 10? "0" + new Date(timeStamp).getSeconds(): new Date(timeStamp).getSeconds();
-				this.nowTime = year + " 年 " + month + " 月 " + date +" 日";
+				this.nowTime = year + "年" + month + "月" + date +"日";
 				this.week = "星期" + "日一二三四五六".charAt(timeStamp.getDay());
 			},
 

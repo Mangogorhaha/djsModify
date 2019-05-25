@@ -38,12 +38,8 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-<<<<<<< HEAD
         "cmt_sqn": this.cmtSqn
         // "cmt_sqn": this.items.cmtSqn
-=======
-        "cmt_sqn": this.items.cmtSqn
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       }
       CommentDetail(param).then(res => {
         if(res.data.result == 0){
@@ -60,7 +56,6 @@ export default {
     },
   },
   created() {
-<<<<<<< HEAD
     this.cmtSqn = this.$route.query.cmtSqn;
     this.getList();
   },
@@ -78,9 +73,6 @@ export default {
       }
       this.curLength = this.length
     }
-=======
-    this.getList();
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
   }
 }
 </script>

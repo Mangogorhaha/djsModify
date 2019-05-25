@@ -30,13 +30,8 @@ export default {
       logining: false,
       isSendCode: false,
       ruleForm: {
-<<<<<<< HEAD
         account: '',
         psd: '',
-=======
-        account: 'admin',
-        psd: '888888',
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
         code: '',
       },
       rules: {

@@ -32,12 +32,8 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-<<<<<<< HEAD
         "usr_sqn": this.usrSqn
         // "usr_sqn": this.items.usrSqn
-=======
-        "usr_sqn": this.items.usrSqn
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       }
       UserDetail(param).then(res => {
         if(res.data.result == 0){

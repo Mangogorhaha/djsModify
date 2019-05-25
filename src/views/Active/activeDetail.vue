@@ -35,12 +35,8 @@ export default {
     getList: function(){
       let that = this;
       let param = {
-<<<<<<< HEAD
         "evt_sqn": this.evtSqn
         // "evt_sqn": this.items.evtSqn
-=======
-        "evt_sqn": this.items.evtSqn
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
       }
       ActiveDetail(param).then(res => {
         if(res.data.result == 0){

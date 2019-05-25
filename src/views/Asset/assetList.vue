@@ -62,7 +62,7 @@
         </template>
       </el-table-column>
       <el-table-column key="9" prop="tme_log" min-width="160" label="交易时间"></el-table-column>
-      <el-table-column key="10" prop="rsn_comment" min-width="160" label="说明"></el-table-column>
+      <el-table-column key="10" prop="rsn_comment" min-width="160" label="说明" :show-overflow-tooltip="true"></el-table-column>
 
       <el-table-column key="11" label="操作" min-width="80">
 				<!-- <template slot-scope="scope">

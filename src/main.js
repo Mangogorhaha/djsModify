@@ -12,24 +12,16 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
-<<<<<<< HEAD
 // import VCharts from 'v-charts'
 import VeLine from 'v-charts/lib/line'
 import VePie from 'v-charts/lib/pie'
-=======
-import VCharts from 'v-charts'
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-<<<<<<< HEAD
 // Vue.use(VCharts)
-=======
-Vue.use(VCharts)
->>>>>>> 6a0bbe904a5503efa9c99ee7e70e4426f6ceeb26
 Vue.prototype.$axios = axios
 Vue.component(VeLine.name, VeLine)
 Vue.component(VePie.name, VePie)
