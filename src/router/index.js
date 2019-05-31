@@ -25,6 +25,9 @@ import orderList from '@/views/Order/orderList.vue'
 import userIndex from '@/views/User/userIndex.vue'
 import userList from '@/views/User/userList.vue'
 import userDetail from '@/views/User/userDetail.vue'
+// 版本
+import versionPre from '@/views/Version/versionPre.vue'
+import versionPulish from '@/views/Version/versionPulish.vue'
 
 let routes = [
   {
@@ -38,7 +41,6 @@ let routes = [
     component: Home,
     name: '店铺管理',
     iconCls: 'fa fa-shopping-bag',//图标样式class
-    alwaysShow: true,
     children: [
       { path:'/shopIndex',component:shopIndex,name:'店铺首页',meta:{urlIndex:101} },
       { path:'/shopList',component:shopList,name:'店铺列表',meta:{urlIndex:102} },
@@ -101,6 +103,16 @@ let routes = [
       { path:'/cmtDetail',component:cmtDetail,name:'评论详情',meta:{urlIndex:204},hidden:true}
     ]
   },
+  {
+    path: '/',
+    component: Home,
+    name: '版本管理',
+    iconCls: 'fa fa-pencil-square',
+    children: [
+      { path:'/versionPre',component:versionPre,name:'历史版本'},
+      { path:'/versionPulish',component:versionPulish,name:'新版发布'}
+    ]
+  }
 ];
 
 export default routes;
