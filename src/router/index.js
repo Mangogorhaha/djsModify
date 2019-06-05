@@ -42,10 +42,10 @@ let routes = [
     name: '店铺管理',
     iconCls: 'fa fa-shopping-bag',//图标样式class
     children: [
-      { path:'/shopIndex',component:shopIndex,name:'店铺首页',meta:{urlIndex:101} },
-      { path:'/shopList',component:shopList,name:'店铺列表',meta:{urlIndex:102} },
-      { path:'/shopAudit',component:shopAudit,name:'店铺审核',meta:{urlIndex:103},hidden:true},
-      { path:'/shopDetail',component:shopDetail,name:'店铺详情',meta:{urlIndex:104},hidden:true }
+      { path:'/shopIndex',component:shopIndex,name:'店铺首页',meta:{keep: true} },
+      { path:'/shopList',component:shopList,name:'店铺列表',meta:{keep: true} },
+      { path:'/shopAudit',component:shopAudit,name:'店铺审核',meta:{keep: true},hidden:true},
+      { path:'/shopDetail',component:shopDetail,name:'店铺详情',meta:{keep: true},hidden:true }
     ]
   },
   {
@@ -54,9 +54,9 @@ let routes = [
     name: '用户管理',
     iconCls: 'fa fa-user',
     children: [
-      { path:'/userIndex',component:userIndex,name:'用户首页',meta:{urlIndex:701} },
-      { path:'/userList',component:userList,name:'用户列表',meta:{urlIndex:702} },
-      { path:'/userDetail',component:userDetail,name:'用户详情',meta:{urlIndex:703},hidden:true }
+      { path:'/userIndex',component:userIndex,name:'用户首页',meta:{keep: true} },
+      { path:'/userList',component:userList,name:'用户列表',meta:{keep: true} },
+      { path:'/userDetail',component:userDetail,name:'用户详情',meta:{keep: true},hidden:true }
     ]
   },
   {
@@ -65,9 +65,9 @@ let routes = [
     name: '资产管理',
     iconCls: 'fa fa-credit-card',
     children: [
-      { path:'/assetIndex',component:assetIndex,name:'资产首页',meta:{urlIndex:301} },
-      { path:'/assetList',component:assetList,name:'资产列表',meta:{urlIndex:302} },
-      { path:'/assetWithdrawList',component:assetWithdrawList,name:'提现列表',meta:{urlIndex:303} }
+      { path:'/assetIndex',component:assetIndex,name:'资产首页',meta:{keep: true} },
+      { path:'/assetList',component:assetList,name:'资产列表',meta:{keep: true} },
+      { path:'/assetWithdrawList',component:assetWithdrawList,name:'提现列表',meta:{keep: true} }
     ]
   },
   {
@@ -76,9 +76,9 @@ let routes = [
     name: '活动管理',
     iconCls: 'fa fa-pencil-square-o',
     children: [
-      { path:'/activeIndex',component:activeIndex,name:'活动首页',meta:{urlIndex:401} },
-      { path:'/activeList',component:activeList,name:'活动列表',meta:{urlIndex:402} },
-      { path:'/activeDetail',component:activeDetail,name:'活动详情',meta:{urlIndex:403},hidden:true }
+      { path:'/activeIndex',component:activeIndex,name:'活动首页',meta:{keep: true} },
+      { path:'/activeList',component:activeList,name:'活动列表',meta:{keep: true} },
+      { path:'/activeDetail',component:activeDetail,name:'活动详情',meta:{keep: true},hidden:true }
     ]
   },
   {
@@ -87,8 +87,8 @@ let routes = [
     name: '订单管理',
     iconCls: 'fa fa-file-text-o',
     children: [
-      { path:'/orderIndex',component:orderIndex,name:'订单首页',meta:{urlIndex:501} },
-      { path:'/orderList',component:orderList,name:'订单列表',meta:{urlIndex:502} },
+      { path:'/orderIndex',component:orderIndex,name:'订单首页',meta:{keep: true} },
+      { path:'/orderList',component:orderList,name:'订单列表',meta:{keep: true} },
     ]
   },
   {
@@ -97,10 +97,10 @@ let routes = [
     name: '评论管理',
     iconCls: 'fa fa-commenting-o',
     children: [
-      { path:'/cmtIndex',component:cmtIndex,name:'评论首页',meta:{urlIndex:201} },
-      { path:'/cmtList',component:cmtList,name:'评论列表',meta:{urlIndex:202} },
-      { path:'/cmtAudit',component:cmtAudit,name:'处理举报',meta:{urlIndex:203},hidden:true},
-      { path:'/cmtDetail',component:cmtDetail,name:'评论详情',meta:{urlIndex:204},hidden:true}
+      { path:'/cmtIndex',component:cmtIndex,name:'评论首页',meta:{keep: true} },
+      { path:'/cmtList',component:cmtList,name:'评论列表',meta:{keep: true} },
+      { path:'/cmtAudit',component:cmtAudit,name:'处理举报',meta:{keep: true},hidden:true},
+      { path:'/cmtDetail',component:cmtDetail,name:'评论详情',meta:{keep: true},hidden:true}
     ]
   },
   {
@@ -109,8 +109,8 @@ let routes = [
     name: '版本管理',
     iconCls: 'fa fa-pencil-square',
     children: [
-      { path:'/versionPre',component:versionPre,name:'历史版本'},
-      { path:'/versionPulish',component:versionPulish,name:'新版发布'}
+      { path:'/versionPre',component:versionPre,name:'历史版本',meta:{keep: false}},
+      { path:'/versionPulish',component:versionPulish,name:'新版发布',meta:{keep: true}}
     ]
   }
 ];

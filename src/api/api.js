@@ -57,3 +57,7 @@ export const OrderList = params => axios.post('/Adm_Odr_List', params);
 export const UserIndex = params => axios.post('/Adm_Usr_Main', params);
 export const UserList = params => axios.post('/Adm_Usr_List', params);
 export const UserDetail = params => axios.post('/Adm_Usr_Detail', params);
+
+// 版本管理模块
+export const VersionList = params => axios.post('/Vsn_Adm_List', params);
+export const VersionAdd = params => axios.post('/Vsn_Adm_Add', params);

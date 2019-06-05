@@ -13,7 +13,8 @@
           </tr>
           <tr>
             <td>成立日期：</td>
-            <td><input type="date" v-model="lsn_time"/></td>
+            <!-- <td><input type="date" v-model="lsn_time"/></td> -->
+            <td><el-date-picker v-model="lsn_time" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker></td>
           </tr>
           <tr>
             <td>执照法人：</td>
@@ -29,7 +30,8 @@
           </tr>
           <tr>
             <td>身份证有效期：</td>
-            <td><input type="date" v-model="tme_exprtion"/></td>
+            <!-- <td><input type="date" v-model="tme_exprtion"/></td> -->
+            <td><el-date-picker v-model="tme_exprtion" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker></td>
           </tr>
           <tr>
             <td>店铺名称：</td>
