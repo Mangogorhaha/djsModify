@@ -79,7 +79,9 @@
 
     <!-- 处理提现界面 -->
     <el-dialog title="提示" :visible.sync="withdrawform" width="30%">
-      同意提现？
+      <div>同意提现？</div>
+      <div>本次提现操作将收取 <el-input v-model="amtFee" style="width: 80px" placeholder="0.00"></el-input>
+       元手续费</div>
       <span slot="footer">
         <el-button @click="process('0')">驳回</el-button>
         <el-button type="primary" @click="process('1')">同意</el-button>
@@ -105,6 +107,7 @@ export default {
       assetList: [], //资产列表
       withdrawform: false,
       paySqn: '',
+      amtFee: '',
 
       dmyCode: '', // 店铺or用户编号
       usrMobile: '', // 手机号码
@@ -173,9 +176,14 @@ export default {
       this.paySqn = row.pay_sqn;
     },
     process(status) {
+      if(isNaN(parseFloat(this.amtFee)) || parseFloat(this.amtFee) < 0) {
+        this.$message.error('请输入有效的手续费');
+        return;
+      }
       let param = {
         "pay_sqn": this.paySqn,
-        "flg_result": status
+        "flg_result": status,
+        "amt_fee": this.amtFee
       };
       AssetWithdraw(param).then(res => {
         this.$message(res.data.message);

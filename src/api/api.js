@@ -59,5 +59,9 @@ export const UserList = params => axios.post('/Adm_Usr_List', params);
 export const UserDetail = params => axios.post('/Adm_Usr_Detail', params);
 
 // 版本管理模块
-export const VersionList = params => axios.post('/Vsn_Adm_List', params);
-export const VersionAdd = params => axios.post('/Vsn_Adm_Add', params);
+export const VersionList = params => axios.post('/Adm_Vsn_LIST', params);
+export const VersionAdd = params => axios.post('/Adm_Vsn_ADD', params);
+
+// 资金监控模块
+export const MonitorRealtime = params => axios.post('http://192.168.10.150:7002/Adm_Ctl_Send', params);
+export const MonitorHistory = params => axios.post('http://192.168.10.150:7002/Adm_Ctl_List', params);

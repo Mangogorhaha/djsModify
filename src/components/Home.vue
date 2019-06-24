@@ -35,7 +35,7 @@
 						<el-tabs v-model="activeIndex" type="card" @tab-remove="tabRemove" @tab-click='tabClick'>
 							<el-tab-pane :label="item.name" :name="index + ''" v-for="(item, index) in tabs" :key="index" closable>
 								<transition name="fade" mode="out-in">
-									<keep-alive include="/versionPre">
+									<keep-alive>
 										<router-view :items="item"></router-view>
 									</keep-alive>
 								</transition>

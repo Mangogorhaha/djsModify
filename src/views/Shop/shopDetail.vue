@@ -173,6 +173,7 @@ li {
   margin-bottom: 10px;
   img {
     width: 160px;
+    border: 1px solid #000;
   }
 }
 .license{

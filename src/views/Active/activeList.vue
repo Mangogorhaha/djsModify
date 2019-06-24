@@ -44,7 +44,7 @@
         </template>
       </el-table-column>
       <el-table-column key="8" prop="tme_log" min-width="160" label="发布时间"></el-table-column>
-      <el-table-column key="9" prop="tme_end" min-width="160" label="注册时间"></el-table-column>
+      <el-table-column key="9" prop="tme_end" min-width="160" label="结束时间"></el-table-column>
 
       <el-table-column key="10" label="操作" min-width="80">
 				<template slot-scope="scope">

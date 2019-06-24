@@ -28,6 +28,9 @@ import userDetail from '@/views/User/userDetail.vue'
 // 版本
 import versionPre from '@/views/Version/versionPre.vue'
 import versionPulish from '@/views/Version/versionPulish.vue'
+// 监控
+import monitorRealtime from '@/views/Monitor/monitorRealtime.vue'
+import monitorHistory from '@/views/Monitor/monitorHistory.vue'
 
 let routes = [
   {
@@ -104,13 +107,23 @@ let routes = [
     ]
   },
   {
-    path: '/',
+    path: '/versionPre',
     component: Home,
     name: '版本管理',
     iconCls: 'fa fa-pencil-square',
     children: [
       { path:'/versionPre',component:versionPre,name:'历史版本',meta:{keep: false}},
       { path:'/versionPulish',component:versionPulish,name:'新版发布',meta:{keep: true}}
+    ]
+  },
+  {
+    path: '/monitorRealtime',
+    component: Home,
+    name: '资金监控',
+    iconCls: 'fa fa-bar-chart',
+    children: [
+      { path:'/monitorRealtime',component:monitorRealtime,name:'实时监控',meta:{keep: true}},
+      { path:'/monitorHistory',component:monitorHistory,name:'查询历史',meta:{keep: true}}
     ]
   }
 ];
