@@ -152,9 +152,10 @@ export default {
         this.dataList = res.data.base;
         this.idImg = [
           { imgUrl: res.data.base.lsn_url },
+          { imgUrl: res.data.base.fdd_url },
+          { imgUrl: res.data.base.adt_url },
           { imgUrl: res.data.base.url_front },
-          { imgUrl: res.data.base.url_back },
-          { imgUrl: res.data.base.fdd_url }
+          { imgUrl: res.data.base.url_back }
         ];
         this.lsn_code = res.data.base.lsn_code;
         this.lsn_entity = res.data.base.lsn_entity;

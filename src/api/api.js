@@ -1,8 +1,10 @@
 import axios from 'axios'
 
-// axios.defaults.baseURL = 'http://api.5idjs.com'; //正式环境
-axios.defaults.baseURL = 'http://api_test.5idjs.com' // 测试环境
+// axios.defaults.baseURL = 'http://api.5idjs.com'; // 正式环境
+axios.defaults.baseURL = 'http://apitest.5idjs.com' // 测试环境
+// axios.defaults.baseURL = 'http://apidev.5idjs.com' // 开发环境
 // axios.defaults.baseURL = 'http://192.168.10.150:7001';
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.timeout = 5000;
 
@@ -63,5 +65,5 @@ export const VersionList = params => axios.post('/Adm_Vsn_LIST', params);
 export const VersionAdd = params => axios.post('/Adm_Vsn_ADD', params);
 
 // 资金监控模块
-export const MonitorRealtime = params => axios.post('http://192.168.10.150:7002/Adm_Ctl_Send', params);
-export const MonitorHistory = params => axios.post('http://192.168.10.150:7002/Adm_Ctl_List', params);
+export const MonitorRealtime = params => axios.post('/Adm_Ctl_Send', params);
+export const MonitorHistory = params => axios.post('/Adm_Ctl_List', params);

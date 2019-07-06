@@ -53,10 +53,11 @@
             <li>手机号码：{{dataList.mobile}}</li>
             <li>提交时间：{{dataList.tme_log}}</li>
             <el-row class="idImg">
-              <el-col :span="6"><img :src="dataList.lsn_url"></el-col>
-              <el-col :span="6"><img :src="dataList.fdd_url"></el-col>
-              <el-col :span="6"><img :src="dataList.url_front"></el-col>
-              <el-col :span="6"><img :src="dataList.url_back"></el-col>
+              <el-col :span="5"><img :src="dataList.lsn_url"></el-col>
+              <el-col :span="5"><img :src="dataList.fdd_url"></el-col>
+              <el-col :span="4"><img :src="dataList.adt_url"></el-col>
+              <el-col :span="5"><img :src="dataList.url_front"></el-col>
+              <el-col :span="5"><img :src="dataList.url_back"></el-col>
             </el-row>
           </el-col>
         </el-row>
@@ -174,6 +175,7 @@ li {
   img {
     width: 160px;
     border: 1px solid #000;
+    box-shadow: 1px 1px 2px #ccc;
   }
 }
 .license{
