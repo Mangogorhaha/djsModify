@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://api.5idjs.com'; // 正式环境
-axios.defaults.baseURL = 'http://apitest.5idjs.com' // 测试环境
-// axios.defaults.baseURL = 'http://apidev.5idjs.com' // 开发环境
+// axios.defaults.baseURL = 'http://apitest.5idjs.com' // 测试环境
+axios.defaults.baseURL = 'http://apidev.5idjs.com' // 开发环境
 // axios.defaults.baseURL = 'http://192.168.10.150:7001';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -30,6 +30,7 @@ export const Logout = params => axios.post('/Adm_Acc_Quit', params);
 // 店铺管理模块
 export const ShopIndex = params => axios.post('/Adm_Shp_Main', params);
 export const ShopList = params => axios.post('/Adm_Shp_List', params);
+export const ShopMessage = params => axios.post('/Adm_Shp_Message', params);
 // 店铺详情0审核 1执照 2基本
 export const ShopDetail = params => axios.post('/Adm_Shp_Detail', params);
 export const ShopAudit = params => axios.post('/Adm_Shp_Verify', params);
@@ -59,6 +60,7 @@ export const OrderList = params => axios.post('/Adm_Odr_List', params);
 export const UserIndex = params => axios.post('/Adm_Usr_Main', params);
 export const UserList = params => axios.post('/Adm_Usr_List', params);
 export const UserDetail = params => axios.post('/Adm_Usr_Detail', params);
+export const UserMessage = params => axios.post('/Adm_Usr_Message', params);
 
 // 版本管理模块
 export const VersionList = params => axios.post('/Adm_Vsn_LIST', params);

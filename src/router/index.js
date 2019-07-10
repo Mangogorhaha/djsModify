@@ -5,6 +5,7 @@ import shopIndex from '@/views/Shop/shopIndex.vue'
 import shopList from '@/views/Shop/shopList.vue'
 import shopAudit from '@/views/Shop/shopAudit.vue'
 import shopDetail from '@/views/Shop/shopDetail.vue'
+import shopMessage from '@/views/Shop/shopMessage.vue'
 // 评论
 import cmtIndex from '@/views/Comment/cmtIndex.vue'
 import cmtList from '@/views/Comment/cmtList.vue'
@@ -25,6 +26,7 @@ import orderList from '@/views/Order/orderList.vue'
 import userIndex from '@/views/User/userIndex.vue'
 import userList from '@/views/User/userList.vue'
 import userDetail from '@/views/User/userDetail.vue'
+import userMessage from '@/views/User/userMessage.vue'
 // 版本
 import versionPre from '@/views/Version/versionPre.vue'
 import versionPulish from '@/views/Version/versionPulish.vue'
@@ -48,7 +50,8 @@ let routes = [
       { path:'/shopIndex',component:shopIndex,name:'店铺首页',meta:{keep: true} },
       { path:'/shopList',component:shopList,name:'店铺列表',meta:{keep: true} },
       { path:'/shopAudit',component:shopAudit,name:'店铺审核',meta:{keep: true},hidden:true},
-      { path:'/shopDetail',component:shopDetail,name:'店铺详情',meta:{keep: true},hidden:true }
+      { path:'/shopDetail',component:shopDetail,name:'店铺详情',meta:{keep: true},hidden:true },
+      { path:'/shopMessage',component:shopMessage,name:'店铺消息',meta:{keep: true} },
     ]
   },
   {
@@ -59,7 +62,8 @@ let routes = [
     children: [
       { path:'/userIndex',component:userIndex,name:'用户首页',meta:{keep: true} },
       { path:'/userList',component:userList,name:'用户列表',meta:{keep: true} },
-      { path:'/userDetail',component:userDetail,name:'用户详情',meta:{keep: true},hidden:true }
+      { path:'/userDetail',component:userDetail,name:'用户详情',meta:{keep: true},hidden:true },
+      { path:'/userMessage',component:userMessage,name:'用户消息',meta:{keep: true} },
     ]
   },
   {
